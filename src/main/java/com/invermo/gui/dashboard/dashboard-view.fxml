@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.invermo.gui.dashboard.DashboardViewController"
+            prefHeight="1280.0" prefWidth="800.0"
+            fx:id="mainContainer">
+    <Button text="Logout!" onAction="#onLogoutButton"/>
+    <Text fx:id="userName" layoutX="22.0" layoutY="45.0"/>
+</AnchorPane>
