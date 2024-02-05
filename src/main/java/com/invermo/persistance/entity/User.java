@@ -1,5 +1,5 @@
 package com.invermo.persistance.entity;
 
 
-public record User(long id, String userName, String userEmail) {
+public record User(Long id, String userName, String userEmail) {
 }
