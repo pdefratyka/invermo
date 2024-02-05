@@ -1,13 +1,13 @@
 package com.invermo.state;
 
 import com.invermo.persistance.entity.User;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ApplicationState {
 
     private static User user;
-
-    private ApplicationState() {
-    }
 
     public static void setUser(User user) {
         ApplicationState.user = user;

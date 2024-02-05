@@ -19,7 +19,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public boolean login(final String login, final String password) {
         final String hashedPassword = HashingService.hashText(password);
-        Optional<User> user = userRepository.findUserByLoginAndPassword(login, hashedPassword);
+        final Optional<User> user = userRepository.findUserByLoginAndPassword(login, hashedPassword);
         if (user.isPresent()) {
             ApplicationState.setUser(user.get());
             return true;

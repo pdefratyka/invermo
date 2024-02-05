@@ -7,19 +7,15 @@
 <?import javafx.scene.text.Text?>
 <AnchorPane fx:id="mainContainer" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.invermo.gui.login.LoginViewController">
-    <children>
-        <AnchorPane layoutX="526.0" layoutY="266.0" prefHeight="200.0" prefWidth="200.0"
-                    style="-fx-background-color: lightGray;">
-            <children>
-                <Text layoutX="22.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login"/>
-                <TextField fx:id="loginInput" layoutX="22.0" layoutY="45.0"/>
-                <Text layoutX="22.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password"/>
-                <PasswordField fx:id="passwordInput" layoutX="22.0" layoutY="108.0"
-                               onKeyReleased="#onPasswordKeyRelease"/>
-                <Button layoutX="72.0" layoutY="149.0" onAction="#onLoginButtonClick" text="Login!"/>
-            </children>
-        </AnchorPane>
-        <Text fill="#c4160a" fx:id="wrongCredentialsText" layoutX="526.0" layoutY="233.0" strokeType="OUTSIDE"
-              strokeWidth="0.0" text="Wrong Credentials" textAlignment="CENTER" visible="false" wrappingWidth="200.0"/>
-    </children>
+    <AnchorPane layoutX="526.0" layoutY="266.0" prefHeight="200.0" prefWidth="200.0"
+                style="-fx-background-color: lightGray;">
+        <Text layoutX="22.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login"/>
+        <TextField fx:id="loginInput" layoutX="22.0" layoutY="45.0"/>
+        <Text layoutX="22.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password"/>
+        <PasswordField fx:id="passwordInput" layoutX="22.0" layoutY="108.0"
+                       onKeyReleased="#onPasswordKeyRelease"/>
+        <Button layoutX="72.0" layoutY="149.0" onAction="#onLoginButtonClick" text="Login!"/>
+    </AnchorPane>
+    <Text fill="#c4160a" fx:id="wrongCredentialsText" layoutX="526.0" layoutY="233.0" strokeType="OUTSIDE"
+          strokeWidth="0.0" text="Wrong Credentials" textAlignment="CENTER" visible="false" wrappingWidth="200.0"/>
 </AnchorPane>

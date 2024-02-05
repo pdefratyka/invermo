@@ -1,16 +1,16 @@
 package com.invermo.utils;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class HashingService {
 
     private static final String HASHING_ALGORITHM = "SHA-256";
-
-    private HashingService() {
-
-    }
 
     public static String hashText(String text) {
         final MessageDigest digest = getMessageDigest();
