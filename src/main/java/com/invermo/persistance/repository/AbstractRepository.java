@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.function.Function;
 import java.util.logging.Logger;
 
 public abstract class AbstractRepository {
@@ -22,12 +23,12 @@ public abstract class AbstractRepository {
         }
     }
 
-    protected ResultSet executeQuery(final String query) {
+    protected <T> T executeQuery(final String query, Function<ResultSet, T> processingFunction) {
         logger.info("Execute query: " + query);
-        try {
-            final Connection connection = DbHelper.getDbConnection();
-            final Statement statement = connection.createStatement();
-            return statement.executeQuery(query);
+        try (final Connection connection = DbHelper.getDbConnection();
+             final Statement statement = connection.createStatement();
+             final ResultSet resultSet = statement.executeQuery(query)) {
+            return processingFunction.apply(resultSet);
         } catch (SQLException ex) {
             throw new RuntimeException("Error during executing query", ex);
         }

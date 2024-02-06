@@ -16,21 +16,13 @@ public class AssetRepositoryImpl extends AbstractRepository implements AssetRepo
     @Override
     public List<Asset> getAllAssets() {
         final String query = prepareGetAssetsFromDbQuery();
-        try (ResultSet resultSet = executeQuery(query)) {
-            return extractAssetsFromResultSet(resultSet);
-        } catch (SQLException ex) {
-            throw new RuntimeException("Error during processing ResultSet", ex);
-        }
+        return executeQuery(query, this::extractAssetsFromResultSet);
     }
 
     @Override
     public List<Asset> searchAssets(String searchValue) {
         final String query = prepareSearchAssetsQuery(searchValue);
-        try (ResultSet resultSet = executeQuery(query)) {
-            return extractAssetsFromResultSet(resultSet);
-        } catch (SQLException ex) {
-            throw new RuntimeException("Error during processing ResultSet", ex);
-        }
+        return executeQuery(query, this::extractAssetsFromResultSet);
     }
 
     @Override
@@ -50,13 +42,17 @@ public class AssetRepositoryImpl extends AbstractRepository implements AssetRepo
         execute(query);
     }
 
-    private List<Asset> extractAssetsFromResultSet(final ResultSet resultSet) throws SQLException {
-        final List<Asset> assets = new ArrayList<>();
-        while (resultSet.next()) {
-            final Asset asset = buildAssetFromResultSet(resultSet);
-            assets.add(asset);
+    private List<Asset> extractAssetsFromResultSet(final ResultSet resultSet) {
+        try {
+            final List<Asset> assets = new ArrayList<>();
+            while (resultSet.next()) {
+                final Asset asset = buildAssetFromResultSet(resultSet);
+                assets.add(asset);
+            }
+            return assets;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error during processing ResultSet", ex);
         }
-        return assets;
     }
 
     private Asset buildAssetFromResultSet(final ResultSet resultSet) throws SQLException {

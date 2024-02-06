@@ -23,19 +23,19 @@ public class UserRepositoryImpl extends AbstractRepository implements UserReposi
 
     private Optional<User> getUserFromDB(final String login, final String password) {
         final String query = prepareGetUserFromDbQuery(login, password);
-        try (ResultSet resultSet = executeQuery(query)) {
-            return extractUserFromResultSet(resultSet);
-        } catch (SQLException ex) {
-            throw new RuntimeException("Error during processing ResultSet", ex);
-        }
+        return executeQuery(query, this::extractUserFromResultSet);
     }
 
-    private Optional<User> extractUserFromResultSet(final ResultSet resultSet) throws SQLException {
-        if (resultSet.next()) {
-            final long userId = resultSet.getLong(UsersTable.USER_ID_COLUMN);
-            final String userName = resultSet.getString(UsersTable.LOGIN_COLUMN);
-            final String userEmail = resultSet.getString(UsersTable.USER_EMAIL_COLUMN);
-            return Optional.of(new User(userId, userName, userEmail));
+    private Optional<User> extractUserFromResultSet(final ResultSet resultSet) {
+        try {
+            if (resultSet.next()) {
+                final long userId = resultSet.getLong(UsersTable.USER_ID_COLUMN);
+                final String userName = resultSet.getString(UsersTable.LOGIN_COLUMN);
+                final String userEmail = resultSet.getString(UsersTable.USER_EMAIL_COLUMN);
+                return Optional.of(new User(userId, userName, userEmail));
+            }
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error during processing ResultSet", ex);
         }
         return Optional.empty();
     }
