@@ -24,6 +24,16 @@ public class AssetRepositoryImpl extends AbstractRepository implements AssetRepo
     }
 
     @Override
+    public List<Asset> searchAssets(String searchValue) {
+        final String query = prepareSearchAssetsQuery(searchValue);
+        try (ResultSet resultSet = executeQuery(query)) {
+            return extractAssetsFromResultSet(resultSet);
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error during processing ResultSet", ex);
+        }
+    }
+
+    @Override
     public void saveAsset(final Asset asset) {
         String query;
         if (asset.assetId() != null) {
@@ -59,6 +69,10 @@ public class AssetRepositoryImpl extends AbstractRepository implements AssetRepo
 
     private String prepareGetAssetsFromDbQuery() {
         return AssetsDatabaseQueries.getAllAssets();
+    }
+
+    private String prepareSearchAssetsQuery(String searchValue) {
+        return AssetsDatabaseQueries.searchAssets(searchValue);
     }
 
     private String prepareAddNewAssetQuery(final Asset asset) {

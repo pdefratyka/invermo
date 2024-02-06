@@ -20,6 +20,11 @@ public class AssetsServiceImpl implements AssetsService {
     }
 
     @Override
+    public List<Asset> getAssetsBySearchParam(String searchValue) {
+        return assetRepository.searchAssets(searchValue);
+    }
+
+    @Override
     public void deleteAssetById(long id) {
         assetRepository.deleteAssetById(id);
     }

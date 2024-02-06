@@ -24,4 +24,12 @@ public final class AssetsDatabaseQueries {
     static String getAllAssets() {
         return "SELECT * FROM assets ORDER BY asset_id";
     }
+
+    static String searchAssets(String searchValue) {
+        return "SELECT * FROM assets WHERE " +
+                "name ilike '%" + searchValue + "%' " +
+                "or symbol ilike '%" + searchValue + "%' " +
+                "or type ilike '%" + searchValue + "%' " +
+                "ORDER BY asset_id";
+    }
 }

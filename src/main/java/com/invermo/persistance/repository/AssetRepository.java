@@ -8,6 +8,8 @@ public interface AssetRepository {
 
     List<Asset> getAllAssets();
 
+    List<Asset> searchAssets(String searchValue);
+
     void saveAsset(Asset asset);
 
     void deleteAssetById(long id);

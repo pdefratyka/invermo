@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -24,6 +25,9 @@ public class AssetsViewController implements Initializable {
 
     @FXML
     private VBox assetsList;
+
+    @FXML
+    private TextField searchField;
 
     private AssetsService assetsService;
 
@@ -41,6 +45,13 @@ public class AssetsViewController implements Initializable {
     public void saveAsset(final Asset asset) {
         assetsService.saveAsset(asset);
         refreshAssetsList();
+    }
+
+    public void searchAssets() {
+        final String searchParam = searchField.getText();
+        System.out.println(searchParam);
+        final List<Asset> assets = assetsService.getAssetsBySearchParam(searchParam);
+        addAssetsToList(assets);
     }
 
     public void onAddAssetAction() throws IOException {
