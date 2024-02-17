@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.Pane?>
+<Pane prefHeight="780.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.invermo.gui.portfolio.views.PortfolioViewController">
+    <children>
+        <TableView fx:id="assetsTable" layoutX="14.0" layoutY="14.0" prefHeight="640.0" prefWidth="1140.0">
+            <columns>
+                <TableColumn prefWidth="360.0" text="Name">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="name"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="190.0" text="Asset Type">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="assetType"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="95.0" text="Type">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="positionType"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="95.0" text="Number">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="number"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="95.0" text="Value [PLN]">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="value"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="95.0" text="Gain [PLN]">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="gain"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="95.0" text="Gain [%]">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="percentageGain"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="93.0" text="Part [%]">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="percentagePortfolioPart"/>
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+        <Button layoutX="882.0" layoutY="673.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="126.0"
+                text="Add Position" onAction="#onAddPositionAction"/>
+        <Button layoutX="1025.0" layoutY="673.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="126.0"
+                text="Add Transaction" onAction="#onAddTransactionAction"/>
+    </children>
+</Pane>

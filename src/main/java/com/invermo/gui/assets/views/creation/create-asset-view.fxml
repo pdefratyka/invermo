@@ -15,9 +15,11 @@
         <Label prefHeight="46.0" prefWidth="280.0" text="Symbol"/>
         <TextField fx:id="assetSymbolValue"/>
         <Label prefHeight="46.0" prefWidth="280.0" text="Type"/>
-        <ChoiceBox prefWidth="282.0" fx:id="assetTypePicker"/>
-        <Button mnemonicParsing="false" prefHeight="49.0" prefWidth="284.0"
-                style="-fx-background-color: lightgreen;" text="Save" onAction="#saveAsset" fx:id="saveAssetButton">
+        <ChoiceBox fx:id="assetTypePicker" prefWidth="282.0"/>
+        <Label prefHeight="46.0" prefWidth="280.0" text="Currency"/>
+        <ChoiceBox fx:id="currencyPicker" prefWidth="282.0"/>
+        <Button fx:id="saveAssetButton" mnemonicParsing="false" onAction="#saveAsset" prefHeight="49.0"
+                prefWidth="284.0" style="-fx-background-color: lightgreen;" text="Save">
             <VBox.margin>
                 <Insets top="20.0"/>
             </VBox.margin>

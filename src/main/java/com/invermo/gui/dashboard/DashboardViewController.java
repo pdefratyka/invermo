@@ -1,6 +1,7 @@
 package com.invermo.gui.dashboard;
 
 import com.invermo.gui.Views;
+import com.invermo.persistance.entity.User;
 import com.invermo.state.ApplicationState;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +28,9 @@ public class DashboardViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.userName.setText(ApplicationState.getUser().userName());
+//        this.userName.setText(ApplicationState.getUser().userName());
+        ApplicationState.setUser(new User(1L, "hoo982", "qwe"));
+        this.userName.setText("hoo");
     }
 
     @FXML
@@ -38,6 +41,11 @@ public class DashboardViewController implements Initializable {
     @FXML
     private void loadAssetsView() {
         loadContent(Views.ASSETS_VIEW_RESOURCE);
+    }
+
+    @FXML
+    private void loadPortfolioView() {
+        loadContent(Views.PORTFOLIO_ViEW_RESOURCE);
     }
 
     private void loadContent(String fxmlPath) {

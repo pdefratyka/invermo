@@ -2,6 +2,7 @@ package com.invermo.persistance.repository.impl.assets;
 
 import com.invermo.persistance.entity.Asset;
 import com.invermo.persistance.enumeration.AssetType;
+import com.invermo.persistance.enumeration.Currency;
 import com.invermo.persistance.repository.AbstractRepository;
 import com.invermo.persistance.repository.AssetRepository;
 import com.invermo.persistance.tables.AssetsTable;
@@ -60,7 +61,8 @@ public class AssetRepositoryImpl extends AbstractRepository implements AssetRepo
         final String name = resultSet.getString(AssetsTable.NAME);
         final String symbol = resultSet.getString(AssetsTable.SYMBOL);
         final String type = resultSet.getString(AssetsTable.TYPE);
-        return new Asset(assetId, name, symbol, AssetType.fromName(type));
+        final String currency = resultSet.getString(AssetsTable.CURRENCY);
+        return new Asset(assetId, name, symbol, AssetType.fromName(type), Currency.valueOf(currency));
     }
 
     private String prepareGetAssetsFromDbQuery() {

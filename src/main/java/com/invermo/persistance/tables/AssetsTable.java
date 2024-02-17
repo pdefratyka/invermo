@@ -10,4 +10,5 @@ public final class AssetsTable {
     public static final String NAME = "name";
     public static final String SYMBOL = "symbol";
     public static final String TYPE = "type";
+    public static final String CURRENCY = "currency";
 }

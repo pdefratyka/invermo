@@ -5,9 +5,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<Pane prefHeight="1280.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<Pane prefHeight="780.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.invermo.gui.assets.views.list.AssetsViewController">
-    <TextField layoutX="40" layoutY="28.0" prefHeight="25.0" prefWidth="1083.0" fx:id="searchField" onKeyTyped="#searchAssets"/>
+    <TextField layoutX="40" layoutY="28.0" prefHeight="25.0" prefWidth="1083.0" fx:id="searchField"
+               onKeyTyped="#searchAssets"/>
     <ScrollPane layoutY="60" layoutX="37" hbarPolicy="NEVER" fitToHeight="true" fitToWidth="true"
                 scaleShape="false" vbarPolicy="ALWAYS">
         <VBox fx:id="assetsList" prefHeight="598.0" prefWidth="1083.0">
@@ -16,5 +17,4 @@
     </ScrollPane>
     <Button layoutX="1003.0" layoutY="673.0" mnemonicParsing="false" onAction="#onAddAssetAction" prefHeight="37.0"
             prefWidth="119.0" text="Add Asset"/>
-
 </Pane>
