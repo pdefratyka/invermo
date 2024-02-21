@@ -1,14 +1,18 @@
 package com.invermo.persistance.repository.impl.assets;
 
 import com.invermo.persistance.entity.Asset;
+import com.invermo.persistance.entity.AssetPrice;
+import com.invermo.persistance.entity.AssetWithPrice;
 import com.invermo.persistance.enumeration.AssetType;
 import com.invermo.persistance.enumeration.Currency;
 import com.invermo.persistance.repository.AbstractRepository;
 import com.invermo.persistance.repository.AssetRepository;
 import com.invermo.persistance.tables.AssetsTable;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +47,25 @@ public class AssetRepositoryImpl extends AbstractRepository implements AssetRepo
         execute(query);
     }
 
+    @Override
+    public List<AssetPrice> getAssetWithPriceByAssetSymbol(String symbol) {
+        final String query = prepareGetAssetWithPriceByAssetSymbol(symbol);
+        return executeQuery(query, this::extractAssetsWithPrice);
+    }
+
+    private List<AssetPrice> extractAssetsWithPrice(final ResultSet resultSet) {
+        try {
+            final List<AssetPrice> assetPrices = new ArrayList<>();
+            while (resultSet.next()) {
+                final AssetPrice assetPrice = buildAssetWithPriceFromResultSet(resultSet);
+                assetPrices.add(assetPrice);
+            }
+            return assetPrices;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error during processing ResultSet", ex);
+        }
+    }
+
     private List<Asset> extractAssetsFromResultSet(final ResultSet resultSet) {
         try {
             final List<Asset> assets = new ArrayList<>();
@@ -54,6 +77,17 @@ public class AssetRepositoryImpl extends AbstractRepository implements AssetRepo
         } catch (SQLException ex) {
             throw new RuntimeException("Error during processing ResultSet", ex);
         }
+    }
+
+    private AssetPrice buildAssetWithPriceFromResultSet(final ResultSet resultSet) throws SQLException {
+        final long assetId = resultSet.getLong(AssetsTable.ASSET_ID);
+        final BigDecimal price = resultSet.getBigDecimal("price");
+        final LocalDateTime dateTime = resultSet.getObject("date", LocalDateTime.class);
+        return AssetPrice.builder()
+                .assetId(assetId)
+                .price(price)
+                .dateTime(dateTime)
+                .build();
     }
 
     private Asset buildAssetFromResultSet(final ResultSet resultSet) throws SQLException {
@@ -83,5 +117,9 @@ public class AssetRepositoryImpl extends AbstractRepository implements AssetRepo
 
     private String prepareRemoveAssetById(final Long id) {
         return AssetsDatabaseQueries.removeAssetById(id);
+    }
+
+    private String prepareGetAssetWithPriceByAssetSymbol(final String symbol) {
+        return AssetsDatabaseQueries.getAssetWithPriceByAssetSymbol(symbol);
     }
 }

@@ -1,6 +1,8 @@
 package com.invermo.service.impl;
 
 import com.invermo.persistance.entity.Asset;
+import com.invermo.persistance.entity.AssetPrice;
+import com.invermo.persistance.entity.AssetWithPrice;
 import com.invermo.persistance.repository.AssetRepository;
 import com.invermo.service.AssetsService;
 
@@ -22,6 +24,11 @@ public class AssetsServiceImpl implements AssetsService {
     @Override
     public List<Asset> getAssetsBySearchParam(String searchValue) {
         return assetRepository.searchAssets(searchValue);
+    }
+
+    @Override
+    public List<AssetPrice> getAssetWithPriceByAssetSymbol(String symbol) {
+        return assetRepository.getAssetWithPriceByAssetSymbol(symbol);
     }
 
     @Override
