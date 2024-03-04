@@ -2,7 +2,10 @@ package com.invermo.gui.portfolio.views;
 
 import com.invermo.gui.Views;
 import com.invermo.gui.portfolio.dto.SinglePortfolioAsset;
+import com.invermo.gui.portfolio.views.position.NewPositionController;
+import com.invermo.persistance.entity.Position;
 import com.invermo.service.PortfolioService;
+import com.invermo.service.PositionService;
 import com.invermo.service.ServiceManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,17 +31,34 @@ public class PortfolioViewController implements Initializable {
     @FXML
     private TableView<SinglePortfolioAsset> assetsTable;
     private PortfolioService portfolioService;
+    private PositionService positionService;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.portfolioService = ServiceManager.getPortfolioService();
+        this.positionService = ServiceManager.getPositionService();
         configureColumns();
         initializeData();
     }
 
-    public void onAddPositionAction() throws IOException {
+    public void initializeData() {
+        final List<SinglePortfolioAsset> assets = portfolioService.getPortfolioAssets();
+        final ObservableList<SinglePortfolioAsset> singlePortfolioAssets = FXCollections.observableArrayList();
+        singlePortfolioAssets.addAll(assets);
+        assetsTable.setItems(singlePortfolioAssets);
+    }
+
+    public void savePosition(final Position position) {
+        positionService.addNewPosition(position);
+        initializeData();
+    }
+
+    @FXML
+    private void onAddPositionAction() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Views.NEW_POSITION_VIEW_RESOURCE));
         Parent root = loader.load();
+        NewPositionController newPositionController = loader.getController();
+        newPositionController.setPortfolioViewController(this);
         Scene scene = new Scene(root, 296, 350);
         Stage stage = new Stage();
         stage.setTitle("Position Creation");
@@ -50,7 +70,8 @@ public class PortfolioViewController implements Initializable {
         stage.show();
     }
 
-    public void onAddTransactionAction() throws IOException {
+    @FXML
+    private void onAddTransactionAction() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Views.NEW_TRANSACTION_VIEW_RESOURCE));
         Parent root = loader.load();
         Scene scene = new Scene(root, 1144, 700);
@@ -64,15 +85,8 @@ public class PortfolioViewController implements Initializable {
         stage.show();
     }
 
-    private void initializeData() {
-        final List<SinglePortfolioAsset> assets = portfolioService.getPortfolioAssets();
-        final ObservableList<SinglePortfolioAsset> singlePortfolioAssets = FXCollections.observableArrayList();
-        singlePortfolioAssets.addAll(assets);
-        assetsTable.setItems(singlePortfolioAssets);
-    }
-
     private void configureColumns() {
-        TableColumn<SinglePortfolioAsset, BigDecimal> tableColumn = (TableColumn<SinglePortfolioAsset, BigDecimal>) assetsTable.getColumns().get(5);
+        TableColumn<SinglePortfolioAsset, BigDecimal> tableColumn = (TableColumn<SinglePortfolioAsset, BigDecimal>) assetsTable.getColumns().get(6);
 
         tableColumn.setCellFactory(cell -> {
             return new TextFieldTableCell<SinglePortfolioAsset, BigDecimal>() {
@@ -81,7 +95,7 @@ public class PortfolioViewController implements Initializable {
                     super.updateItem(item, empty);
                     if (item != null && item.compareTo(BigDecimal.ZERO) > 0) {
                         setStyle("-fx-background-color: lightgreen;");
-                    } else {
+                    } else if (item != null) {
                         setStyle("-fx-background-color: red;");
                     }
                 }

@@ -1,5 +1,6 @@
 package com.invermo.gui.portfolio.views.position;
 
+import com.invermo.gui.portfolio.views.PortfolioViewController;
 import com.invermo.persistance.entity.Asset;
 import com.invermo.persistance.entity.Position;
 import com.invermo.persistance.enumeration.PositionType;
@@ -25,12 +26,10 @@ public class NewPositionController implements Initializable {
     private ChoiceBox<String> positionTypePicker;
 
     private List<Asset> assets;
-
-    private PositionService positionService;
+    private PortfolioViewController portfolioViewController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        this.positionService = ServiceManager.getPositionService();
         final AssetsService assetsService = ServiceManager.getAssetsService();
         this.assets = assetsService.getAllAssets();
         initializeAssetPicker();
@@ -56,7 +55,7 @@ public class NewPositionController implements Initializable {
                 .assetId(assetId)
                 .positionType(PositionType.valueOf(positionTypePicker.getValue()))
                 .build();
-        positionService.addNewPosition(position);
+        portfolioViewController.savePosition(position);
     }
 
     private Long getAssetIdByAssetName(final String assetName) {
@@ -67,4 +66,7 @@ public class NewPositionController implements Initializable {
                 .orElseThrow(() -> new RuntimeException("Asset with given name not found"));
     }
 
+    public void setPortfolioViewController(final PortfolioViewController portfolioViewController) {
+        this.portfolioViewController = portfolioViewController;
+    }
 }

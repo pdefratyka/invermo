@@ -18,6 +18,9 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     public List<Transaction> getAllTransactionsForPositions(List<Long> positionIds) {
+        if (positionIds.isEmpty()) {
+            return List.of();
+        }
         return transactionRepository.getAllTransactionsForPositions(positionIds);
     }
 }

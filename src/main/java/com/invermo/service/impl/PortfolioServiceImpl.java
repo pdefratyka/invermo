@@ -9,46 +9,69 @@ import com.invermo.service.AssetsService;
 import com.invermo.service.PortfolioService;
 import com.invermo.service.PositionService;
 import com.invermo.service.TransactionService;
-import lombok.AllArgsConstructor;
+import com.invermo.service.transaction.calculator.NumberOfAssetCalculator;
+import com.invermo.service.transaction.calculator.PositionGainCalculator;
+import com.invermo.service.transaction.calculator.PositionValueCalculator;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
 public class PortfolioServiceImpl implements PortfolioService {
+
+    private static final Logger logger = Logger.getLogger(PortfolioServiceImpl.class.getName());
+
+    private final Map<String, BigDecimal> latestPrices = new HashMap<>();
 
     private final AssetsService assetsService;
     private final PositionService positionService;
     private final TransactionService transactionService;
 
+    public PortfolioServiceImpl(AssetsService assetsService, PositionService positionService, TransactionService transactionService) {
+        this.assetsService = assetsService;
+        this.positionService = positionService;
+        this.transactionService = transactionService;
+    }
+
     @Override
     public List<SinglePortfolioAsset> getPortfolioAssets() {
+        initializeLatestPrices();
         final List<PositionWithAsset> positionWithAssets = positionService.getPositionsWithAssetsForUser();
         final List<SinglePortfolioAsset> singlePortfolioAssets = new ArrayList<>();
         final List<Transaction> transactions = transactionService.getAllTransactionsForPositions(positionWithAssets.stream().map(PositionWithAsset::getPositionId).toList());
         final Map<Long, List<Transaction>> transactionsForPosition = convertTransactionsToMap(transactions, positionWithAssets);
-        final BigDecimal priceOfUsdPln = getLatestPrice("USD/PLN");
+        BigDecimal portfolioAllValue = BigDecimal.ZERO;
         for (PositionWithAsset positionWithAsset : positionWithAssets) {
-            final BigDecimal numberOfAsset = calculateNumberOfAsset(transactionsForPosition.get(positionWithAsset.getPositionId()));
-            final BigDecimal value = getValue(positionWithAsset, priceOfUsdPln, numberOfAsset);
-            final BigDecimal gain = calculateGain(transactionsForPosition.get(positionWithAsset.getPositionId()), value);
+            final List<Transaction> transactionsPerAsset = transactionsForPosition.get(positionWithAsset.getPositionId());
+            final BigDecimal numberOfAsset = NumberOfAssetCalculator.getNumberOfAsset(transactionsPerAsset);
+            final BigDecimal value = getValue(positionWithAsset, numberOfAsset);
+            final BigDecimal gain = PositionGainCalculator.getPositionGain(transactionsForPosition.get(positionWithAsset.getPositionId()), value, numberOfAsset);
+            final BigDecimal price = PositionGainCalculator.getCost(transactionsForPosition.get(positionWithAsset.getPositionId()), numberOfAsset);
+            final BigDecimal percentageGain = PositionGainCalculator.getPercentageGain(price, gain);
             final SinglePortfolioAsset portfolioAsset = SinglePortfolioAsset.builder()
                     .name(positionWithAsset.getAssetName())
                     .assetType(positionWithAsset.getAssetType().getName())
                     .positionType(positionWithAsset.getPositionType().name())
                     .number(numberOfAsset)
+                    .price(price)
                     .value(value)
                     .gain(gain)
-                    .percentageGain(BigDecimal.ZERO)
-                    .percentagePortfolioPart(BigDecimal.ZERO)
+                    .percentageGain(percentageGain)
                     .build();
             singlePortfolioAssets.add(portfolioAsset);
+            portfolioAllValue = portfolioAllValue.add(value);
+        }
+        for (SinglePortfolioAsset singlePortfolioAsset : singlePortfolioAssets) {
+            singlePortfolioAsset.setPercentagePortfolioPart(singlePortfolioAsset.getValue().divide(portfolioAllValue, 2, RoundingMode.FLOOR)
+                    .multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.FLOOR));
         }
         return singlePortfolioAssets;
     }
@@ -67,34 +90,28 @@ public class PortfolioServiceImpl implements PortfolioService {
         return transactionsForPosition;
     }
 
-    private BigDecimal calculateNumberOfAsset(final List<Transaction> transactions) {
-        return transactions.stream().map(Transaction::getNumberOfAsset)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
     private BigDecimal getLatestPrice(String symbol) {
-        final List<AssetPrice> prices = assetsService.getAssetWithPriceByAssetSymbol(symbol);
-        return prices.stream()
-                .sorted(Comparator.comparing(AssetPrice::getDateTime).reversed())
+        return assetsService.getAssetWithPriceByAssetSymbol(symbol).stream()
+                .sorted(Comparator.comparing(AssetPrice::getDateTime, Comparator.nullsFirst(Comparator.naturalOrder())).reversed())
                 .map(AssetPrice::getPrice)
-                .findFirst().orElseThrow(() -> new RuntimeException("Asset with given symbol does not exists"));
+                .filter(Objects::nonNull)
+                .findFirst().orElseGet(() -> {
+                    logger.warning("Price not found for asset: " + symbol);
+                    return BigDecimal.ZERO;
+                });
     }
 
-    private BigDecimal getValue(final PositionWithAsset positionWithAsset, final BigDecimal usdPln, final BigDecimal numberOfAsset) {
+    private BigDecimal getValue(final PositionWithAsset positionWithAsset, final BigDecimal numberOfAsset) {
         final BigDecimal latestPrice = getLatestPrice(positionWithAsset.getAssetSymbol());
-        if (positionWithAsset.getCurrency().equals(Currency.PLN)) {
-            return latestPrice.multiply(numberOfAsset);
-        } else if (positionWithAsset.getCurrency().equals(Currency.USD)) {
-            return latestPrice.multiply(numberOfAsset).multiply(usdPln);
-        }
-        throw new RuntimeException("Unsupported currency");
+        final Currency assetCurrency = positionWithAsset.getCurrency();
+        final BigDecimal latestCurrencyExchange = latestPrices.get(assetCurrency.name() + "/PLN");
+        return PositionValueCalculator.getPositionValue(numberOfAsset, latestPrice, latestCurrencyExchange);
     }
 
-    private BigDecimal calculateGain(final List<Transaction> transactions, final BigDecimal value) {
-        // ADD currency, add option for sell/buy
-        final BigDecimal cost = transactions.stream()
-                .map(t->t.getPrice().multiply(t.getNumberOfAsset()))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        return value.subtract(cost);
+    private void initializeLatestPrices() {
+        final BigDecimal usdPln = getLatestPrice("USD/PLN");
+        final BigDecimal plnPLn = getLatestPrice("PLN/PLN");
+        latestPrices.put("USD/PLN", usdPln);
+        latestPrices.put("PLN/PLN", plnPLn);
     }
 }

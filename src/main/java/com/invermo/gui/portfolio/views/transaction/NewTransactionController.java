@@ -1,5 +1,6 @@
 package com.invermo.gui.portfolio.views.transaction;
 
+import com.invermo.gui.components.DateTimePicker;
 import com.invermo.persistance.entity.Position;
 import com.invermo.persistance.entity.PositionWithAsset;
 import com.invermo.persistance.entity.Transaction;
@@ -28,7 +29,7 @@ public class NewTransactionController implements Initializable {
     @FXML
     private ChoiceBox<String> transactionTypePicker;
     @FXML
-    private TextField date;
+    private DateTimePicker dateTimePicker;
     @FXML
     private TextField numberOfAssets;
     @FXML
@@ -54,7 +55,7 @@ public class NewTransactionController implements Initializable {
                 .currencyExchangeRate(BigDecimal.valueOf(Double.parseDouble(currencyExchange.getText())))
                 .numberOfAsset(BigDecimal.valueOf(Double.parseDouble(numberOfAssets.getText())))
                 .price(BigDecimal.valueOf(Double.parseDouble(pricePerOne.getText())))
-                .dateTime(DateParser.parseStringToLocalDateTime(date.getText()))
+                .dateTime(dateTimePicker.getDateTime())
                 .transactionType(TransactionType.valueOf(transactionTypePicker.getValue()))
                 .build();
         transactionService.saveTransaction(transaction);

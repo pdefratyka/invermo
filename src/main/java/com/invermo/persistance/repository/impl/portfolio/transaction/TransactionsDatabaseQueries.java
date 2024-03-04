@@ -30,6 +30,10 @@ public class TransactionsDatabaseQueries {
             result.append(id).append(",");
         }
 
-        return result.substring(0, result.length() - 1);
+        if (!positionsId.isEmpty()) {
+            return result.substring(0, result.length() - 1);
+        }
+
+        return "";
     }
 }
