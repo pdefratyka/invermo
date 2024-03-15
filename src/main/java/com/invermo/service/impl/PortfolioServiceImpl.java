@@ -70,7 +70,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             portfolioAllValue = portfolioAllValue.add(value);
         }
         for (SinglePortfolioAsset singlePortfolioAsset : singlePortfolioAssets) {
-            singlePortfolioAsset.setPercentagePortfolioPart(singlePortfolioAsset.getValue().divide(portfolioAllValue, 2, RoundingMode.FLOOR)
+            singlePortfolioAsset.setPercentagePortfolioPart(singlePortfolioAsset.getValue().divide(portfolioAllValue, 4, RoundingMode.FLOOR)
                     .multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.FLOOR));
         }
         return singlePortfolioAssets;
