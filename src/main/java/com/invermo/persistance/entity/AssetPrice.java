@@ -17,4 +17,10 @@ public class AssetPrice {
     private Long assetId;
     private LocalDateTime dateTime;
     private BigDecimal price;
+
+    public AssetPrice(Long assetId, LocalDateTime dateTime, BigDecimal price) {
+        this.assetId = assetId;
+        this.dateTime = dateTime;
+        this.price = price;
+    }
 }

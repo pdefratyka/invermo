@@ -2,7 +2,6 @@ package com.invermo.persistance.repository.impl.assets;
 
 import com.invermo.persistance.entity.Asset;
 import com.invermo.persistance.entity.AssetPrice;
-import com.invermo.persistance.entity.AssetWithPrice;
 import com.invermo.persistance.enumeration.AssetType;
 import com.invermo.persistance.enumeration.Currency;
 import com.invermo.persistance.repository.AbstractRepository;
@@ -15,8 +14,11 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class AssetRepositoryImpl extends AbstractRepository implements AssetRepository {
+
+    private static final Logger logger = Logger.getLogger(AssetRepositoryImpl.class.getName());
 
     @Override
     public List<Asset> getAllAssets() {
@@ -51,6 +53,22 @@ public class AssetRepositoryImpl extends AbstractRepository implements AssetRepo
     public List<AssetPrice> getAssetWithPriceByAssetSymbol(String symbol) {
         final String query = prepareGetAssetWithPriceByAssetSymbol(symbol);
         return executeQuery(query, this::extractAssetsWithPrice);
+    }
+
+    @Override
+    public List<AssetPrice> getLatestAssetsPrices() {
+        final String query = prepareGetLatestAssetsPrices();
+        return executeQuery(query, this::extractAssetsWithPrice);
+    }
+
+    @Override
+    public void saveAssetPrices(final List<AssetPrice> assetPrices) {
+        final List<String> queries = new ArrayList<>();
+        for (AssetPrice assetPrice : assetPrices) {
+            String query = prepareSaveAssetPriceQuery(assetPrice);
+            queries.add(query);
+        }
+        executeQueriesInBatch(queries);
     }
 
     private List<AssetPrice> extractAssetsWithPrice(final ResultSet resultSet) {
@@ -121,5 +139,13 @@ public class AssetRepositoryImpl extends AbstractRepository implements AssetRepo
 
     private String prepareGetAssetWithPriceByAssetSymbol(final String symbol) {
         return AssetsDatabaseQueries.getAssetWithPriceByAssetSymbol(symbol);
+    }
+
+    private String prepareGetLatestAssetsPrices() {
+        return AssetsDatabaseQueries.getLatestAssetsPrices();
+    }
+
+    private String prepareSaveAssetPriceQuery(final AssetPrice assetPrice) {
+        return AssetsDatabaseQueries.saveAssetPrice(assetPrice);
     }
 }

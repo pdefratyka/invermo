@@ -69,9 +69,13 @@ public class PortfolioServiceImpl implements PortfolioService {
             singlePortfolioAssets.add(portfolioAsset);
             portfolioAllValue = portfolioAllValue.add(value);
         }
-        for (SinglePortfolioAsset singlePortfolioAsset : singlePortfolioAssets) {
-            singlePortfolioAsset.setPercentagePortfolioPart(singlePortfolioAsset.getValue().divide(portfolioAllValue, 4, RoundingMode.FLOOR)
-                    .multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.FLOOR));
+        if (portfolioAllValue.intValue()==BigDecimal.ZERO.intValue()) {
+            logger.info("Portfolio all value equals zero");
+        } else {
+            for (SinglePortfolioAsset singlePortfolioAsset : singlePortfolioAssets) {
+                singlePortfolioAsset.setPercentagePortfolioPart(singlePortfolioAsset.getValue().divide(portfolioAllValue, 4, RoundingMode.FLOOR)
+                        .multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.FLOOR));
+            }
         }
         return singlePortfolioAssets;
     }

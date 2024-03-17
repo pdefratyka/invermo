@@ -26,10 +26,10 @@ public class PositionGainCalculator {
     }
 
     public static BigDecimal getPercentageGain(final BigDecimal cost, final BigDecimal gain) {
-        if (gain == null || gain.equals(BigDecimal.valueOf(0))) {
+        if (gain == null || gain.equals(BigDecimal.valueOf(0)) || cost.equals(BigDecimal.ZERO)) {
             return BigDecimal.ZERO;
         }
-        return gain.divide(cost,4, RoundingMode.FLOOR).multiply(BigDecimal.valueOf(100)).setScale(2,RoundingMode.FLOOR);
+        return gain.divide(cost, 4, RoundingMode.FLOOR).multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.FLOOR);
     }
 
     public static BigDecimal getCost(List<Transaction> transactions, final BigDecimal numberOfAssets) {

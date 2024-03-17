@@ -17,4 +17,8 @@ public interface AssetRepository {
     void deleteAssetById(long id);
 
     List<AssetPrice> getAssetWithPriceByAssetSymbol(String symbol);
+
+    List<AssetPrice> getLatestAssetsPrices();
+
+    void saveAssetPrices(List<AssetPrice> assetPrices);
 }
