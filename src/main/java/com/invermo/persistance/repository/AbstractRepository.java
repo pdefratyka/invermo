@@ -6,10 +6,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
 public abstract class AbstractRepository {
+
+    private static final int MAX_BATCH_SIZE = 1000;
 
     private static final Logger logger = Logger.getLogger(AbstractRepository.class.getName());
 
@@ -18,6 +22,25 @@ public abstract class AbstractRepository {
         try (Connection connection = DbHelper.getDbConnection();
              Statement statement = connection.createStatement()) {
             statement.execute(query);
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error during executing query", ex);
+        }
+    }
+
+    protected void executeQueriesInBatch(final List<String> queries) {
+        logger.info("Execute query: " + queries);
+        final List<List<String>> chunksOfQueries = divideQueriesIntoChunks(queries);
+        logger.info("Number of chunks: " + chunksOfQueries.size());
+        try (Connection connection = DbHelper.getDbConnection();
+             Statement statement = connection.createStatement()) {
+            connection.setAutoCommit(false);
+            for (List<String> tempQueries : chunksOfQueries) {
+                for (String query : tempQueries) {
+                    statement.addBatch(query);
+                }
+                statement.executeBatch();
+                connection.commit();
+            }
         } catch (SQLException ex) {
             throw new RuntimeException("Error during executing query", ex);
         }
@@ -32,5 +55,14 @@ public abstract class AbstractRepository {
         } catch (SQLException ex) {
             throw new RuntimeException("Error during executing query", ex);
         }
+    }
+
+    private List<List<String>> divideQueriesIntoChunks(final List<String> queries) {
+        List<List<String>> chunks = new ArrayList<>();
+        for (int i = 0; i < queries.size(); i += MAX_BATCH_SIZE) {
+            int end = Math.min(queries.size(), i + MAX_BATCH_SIZE);
+            chunks.add(queries.subList(i, end));
+        }
+        return chunks;
     }
 }

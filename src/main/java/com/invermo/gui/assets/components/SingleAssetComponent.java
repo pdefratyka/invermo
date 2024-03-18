@@ -145,7 +145,6 @@ public class SingleAssetComponent extends Pane {
         editItem.setOnAction(event -> onEdit());
         final MenuItem deleteItem = new MenuItem("Delete");
         deleteItem.setOnAction(event -> onDelete());
-
         assetsOperationsMenu.getItems().addAll(viewItem, editItem, deleteItem);
     }
 
