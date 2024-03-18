@@ -73,6 +73,9 @@ public class PortfolioViewController implements Initializable {
     }
 
     private BigDecimal roundBigDecimal(final BigDecimal value) {
+        if (value == null) {
+            return BigDecimal.ZERO;
+        }
         return value.setScale(4, RoundingMode.FLOOR);
     }
 
