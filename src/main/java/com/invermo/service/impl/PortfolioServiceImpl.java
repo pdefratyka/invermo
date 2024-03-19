@@ -115,7 +115,9 @@ public class PortfolioServiceImpl implements PortfolioService {
     private void initializeLatestPrices() {
         final BigDecimal usdPln = getLatestPrice("USD/PLN");
         final BigDecimal plnPLn = getLatestPrice("PLN/PLN");
+        final BigDecimal eurPln = getLatestPrice("EUR/PLN");
         latestPrices.put("USD/PLN", usdPln);
         latestPrices.put("PLN/PLN", plnPLn);
+        latestPrices.put("EUR/PLN", eurPln);
     }
 }
