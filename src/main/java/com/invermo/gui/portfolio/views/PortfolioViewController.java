@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -31,6 +32,14 @@ public class PortfolioViewController implements Initializable {
 
     @FXML
     private TableView<SinglePortfolioAsset> assetsTable;
+    @FXML
+    private Label priceSummary;
+    @FXML
+    private Label valueSummary;
+    @FXML
+    private Label gainSummary;
+    @FXML
+    private Label percentageGainSummary;
     private PortfolioService portfolioService;
     private PositionService positionService;
 
@@ -40,6 +49,7 @@ public class PortfolioViewController implements Initializable {
         this.positionService = ServiceManager.getPositionService();
         configureColumns();
         initializeData();
+        initializeSummary();
     }
 
     public void initializeData() {
@@ -53,6 +63,27 @@ public class PortfolioViewController implements Initializable {
     public void savePosition(final Position position) {
         positionService.addNewPosition(position);
         initializeData();
+    }
+
+    private void initializeSummary() {
+        final List<SinglePortfolioAsset> singlePortfolioAssets = assetsTable.getItems();
+        // initialize priceSummary
+
+        // Add this logic to seperate service
+        BigDecimal value = BigDecimal.ZERO;
+        BigDecimal price = BigDecimal.ZERO;
+        for (SinglePortfolioAsset singlePortfolioAsset : singlePortfolioAssets) {
+            value = value.add(singlePortfolioAsset.getValue());
+            price = price.add(singlePortfolioAsset.getPrice());
+        }
+        final BigDecimal gain = value.subtract(price);
+        if(price.compareTo(BigDecimal.ZERO)>0){
+            final BigDecimal percentageGain = gain.divide(price,6, RoundingMode.FLOOR).multiply(BigDecimal.valueOf(100));
+            percentageGainSummary.setText(String.format("%,.2f", percentageGain));
+        }
+        valueSummary.setText(String.format("%,.2f", value));
+        priceSummary.setText(String.format("%,.2f", price));
+        gainSummary.setText(String.format("%,.2f", gain));
     }
 
     private List<SinglePortfolioAsset> styleSinglePortfolioAssets(final List<SinglePortfolioAsset> assets) {

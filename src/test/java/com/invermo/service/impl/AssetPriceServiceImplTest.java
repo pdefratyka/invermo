@@ -13,4 +13,13 @@ public class AssetPriceServiceImplTest {
         AssetPriceService assetPriceService = new AssetPriceServiceImpl(assetsService);
         assetPriceService.updateAllAssetsPrices();
     }
+
+//    @Test
+    void shouldGetAllPricesFromFile() {
+        String fileName = "";
+
+        AssetsService assetsService = ServiceManager.getAssetsService();
+        AssetPriceService assetPriceService = new AssetPriceServiceImpl(assetsService);
+        assetPriceService.updateAllAssetsPricesFromOneFile(fileName);
+    }
 }

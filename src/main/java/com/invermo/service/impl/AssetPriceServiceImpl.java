@@ -4,6 +4,7 @@ import com.invermo.persistance.entity.Asset;
 import com.invermo.persistance.entity.AssetPrice;
 import com.invermo.service.AssetPriceService;
 import com.invermo.service.AssetsService;
+import com.invermo.service.files.AssetPriceAllCSVMapper;
 import com.invermo.service.files.AssetPriceBICSVMapper;
 import com.invermo.service.files.AssetPriceCSVMapper;
 
@@ -29,6 +30,25 @@ public class AssetPriceServiceImpl implements AssetPriceService {
     public AssetPriceServiceImpl(AssetsService assetsService) {
         this.assetsService = assetsService;
     }
+
+    public void updateAllAssetsPricesFromOneFile(final String fileName) {
+        final List<Asset> assets = assetsService.getAllAssets();
+        final Map<String, Long> assetsIds = assets.stream()
+                .collect(Collectors.toMap(Asset::symbol, Asset::assetId));
+        final List<AssetPrice> assetPrices = AssetPriceAllCSVMapper.extractAssetPricesFromCSVFile(fileName, assetsIds)
+                .stream()
+                .filter(assetPrice -> assetPrice.getAssetId() != null)
+                .toList();
+        final Map<Long, List<AssetPrice>> assetPriceMap = assetPrices.stream()
+                .collect(Collectors.groupingBy(AssetPrice::getAssetId));
+        final List<AssetPrice> assetPricesToInsert = new ArrayList<>();
+        for (Map.Entry<Long, List<AssetPrice>> entry : assetPriceMap.entrySet()) {
+            List<AssetPrice> assetPricesTemp = updateAssetPriceByAsset(entry.getValue());
+            assetPricesToInsert.addAll(assetPricesTemp);
+        }
+        assetsService.saveAssetPrice(assetPricesToInsert);
+    }
+
 
     @Override
     public void updateAllAssetsPrices() {

@@ -77,6 +77,7 @@ public class PortfolioServiceImpl implements PortfolioService {
                         .multiply(BigDecimal.valueOf(100)));
             }
         }
+        singlePortfolioAssets.sort(Comparator.comparing(SinglePortfolioAsset::getPercentagePortfolioPart).reversed());
         return singlePortfolioAssets;
     }
 
