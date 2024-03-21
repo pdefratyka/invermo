@@ -10,6 +10,7 @@ import com.invermo.persistance.repository.impl.portfolio.PortfolioRepositoryImpl
 import com.invermo.persistance.repository.impl.portfolio.position.PositionRepositoryImpl;
 import com.invermo.persistance.repository.impl.portfolio.transaction.TransactionRepositoryImpl;
 import com.invermo.persistance.repository.impl.users.UserRepositoryImpl;
+import com.invermo.service.impl.AssetPriceServiceImpl;
 import com.invermo.service.impl.AssetsServiceImpl;
 import com.invermo.service.impl.AuthenticationServiceImpl;
 import com.invermo.service.impl.PortfolioServiceImpl;
@@ -31,6 +32,7 @@ public class ServiceManager {
     private static PositionRepository positionRepository;
     private static TransactionRepository transactionRepository;
     private static TransactionService transactionService;
+    private static AssetPriceService assetPriceService;
 
     public static AuthenticationService getAuthenticationService() {
         if (authenticationService == null) {
@@ -65,6 +67,13 @@ public class ServiceManager {
             transactionService = new TransactionServiceImpl(getTransactionRepository());
         }
         return transactionService;
+    }
+
+    public static AssetPriceService getAssetPriceService() {
+        if (assetPriceService == null) {
+            assetPriceService = new AssetPriceServiceImpl(getAssetsService());
+        }
+        return assetPriceService;
     }
 
     private static UserRepository getUserRepository() {

@@ -4,6 +4,7 @@ import com.invermo.gui.Views;
 import com.invermo.gui.portfolio.dto.SinglePortfolioAsset;
 import com.invermo.gui.portfolio.views.position.NewPositionController;
 import com.invermo.persistance.entity.Position;
+import com.invermo.service.AssetPriceService;
 import com.invermo.service.PortfolioService;
 import com.invermo.service.PositionService;
 import com.invermo.service.ServiceManager;
@@ -18,9 +19,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -42,11 +45,13 @@ public class PortfolioViewController implements Initializable {
     private Label percentageGainSummary;
     private PortfolioService portfolioService;
     private PositionService positionService;
+    private AssetPriceService assetPriceService;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.portfolioService = ServiceManager.getPortfolioService();
         this.positionService = ServiceManager.getPositionService();
+        this.assetPriceService = ServiceManager.getAssetPriceService();
         configureColumns();
         initializeData();
         initializeSummary();
@@ -77,8 +82,8 @@ public class PortfolioViewController implements Initializable {
             price = price.add(singlePortfolioAsset.getPrice());
         }
         final BigDecimal gain = value.subtract(price);
-        if(price.compareTo(BigDecimal.ZERO)>0){
-            final BigDecimal percentageGain = gain.divide(price,6, RoundingMode.FLOOR).multiply(BigDecimal.valueOf(100));
+        if (price.compareTo(BigDecimal.ZERO) > 0) {
+            final BigDecimal percentageGain = gain.divide(price, 6, RoundingMode.FLOOR).multiply(BigDecimal.valueOf(100));
             percentageGainSummary.setText(String.format("%,.2f", percentageGain));
         }
         valueSummary.setText(String.format("%,.2f", value));
@@ -108,6 +113,14 @@ public class PortfolioViewController implements Initializable {
             return BigDecimal.ZERO;
         }
         return value.setScale(4, RoundingMode.FLOOR);
+    }
+
+    @FXML
+    private void onRefreshPricesAction() {
+        System.out.println("On refresh prices");
+        FileChooser fileChooser = new FileChooser();
+        File file = fileChooser.showOpenDialog(null);
+        assetPriceService.updateAllAssetsPricesFromOneFile(file.getAbsolutePath());
     }
 
     @FXML

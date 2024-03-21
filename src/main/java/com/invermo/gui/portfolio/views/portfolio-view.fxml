@@ -61,6 +61,7 @@
                 </TableColumn>
             </columns>
         </TableView>
+        <Button layoutX="682.0" layoutY="673.0" mnemonicParsing="false" onAction="#onRefreshPricesAction" prefHeight="50.0" prefWidth="126.0" text="Refresh Prices" />
         <Button layoutX="882.0" layoutY="673.0" mnemonicParsing="false" onAction="#onAddPositionAction" prefHeight="50.0" prefWidth="126.0" text="Add Position" />
         <Button layoutX="1025.0" layoutY="673.0" mnemonicParsing="false" onAction="#onAddTransactionAction" prefHeight="50.0" prefWidth="126.0" text="Add Transaction" />
       <AnchorPane layoutX="14.0" layoutY="531.0" prefHeight="127.0" prefWidth="1138.0">
