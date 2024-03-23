@@ -5,6 +5,7 @@ import java.util.logging.LogManager;
 
 public class Executable {
     public static void main(String... args) {
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
         initLogging();
         Main.main(args);
     }

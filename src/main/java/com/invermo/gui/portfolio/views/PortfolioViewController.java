@@ -120,7 +120,9 @@ public class PortfolioViewController implements Initializable {
         System.out.println("On refresh prices");
         FileChooser fileChooser = new FileChooser();
         File file = fileChooser.showOpenDialog(null);
-        assetPriceService.updateAllAssetsPricesFromOneFile(file.getAbsolutePath());
+        if (file != null) {
+            assetPriceService.updateAllAssetsPricesFromOneFile(file.getAbsolutePath());
+        }
     }
 
     @FXML
