@@ -18,12 +18,15 @@ module com.invermo {
     opens com.invermo.gui.portfolio.views.transaction to javafx.fxml;
     opens com.invermo.gui.components to javafx.fxml;
 
+    opens com.invermo.gui.components.views to javafx.fxml;
+
     exports com.invermo;
     exports com.invermo.gui.login;
     exports com.invermo.gui.dashboard;
     exports com.invermo.gui.assets.views.creation;
     exports com.invermo.gui.assets.views.list;
     exports com.invermo.gui.assets.components;
+    exports com.invermo.gui.components.views;
     exports com.invermo.gui.portfolio.views.position;
     exports com.invermo.persistance.entity;
     exports com.invermo.gui.portfolio.views;

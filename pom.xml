@@ -6,13 +6,16 @@
 
     <groupId>com</groupId>
     <artifactId>invermo</artifactId>
-    <version>0.1.5</version>
+    <version>0.1.6</version>
     <name>invermo</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit.version>5.9.2</junit.version>
+
         <postgres-version>42.7.1</postgres-version>
+        <javafx.version>17.0.6</javafx.version>
+        <lombok.version>1.18.30</lombok.version>
+        <junit.version>5.9.2</junit.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
@@ -21,12 +24,12 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>17.0.6</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>17.0.6</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -36,7 +39,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
+            <version>${lombok.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -65,7 +68,7 @@
                         <annotationProcessorPath>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.30</version>
+                            <version>${lombok.version}</version>
                         </annotationProcessorPath>
                     </annotationProcessorPaths>
                 </configuration>

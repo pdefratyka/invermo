@@ -31,7 +31,7 @@ public class AssetPriceServiceImpl implements AssetPriceService {
         this.assetsService = assetsService;
     }
 
-    public void updateAllAssetsPricesFromOneFile(final String fileName) {
+    public Map<String, Long> updateAllAssetsPricesFromOneFile(final String fileName) {
         final List<Asset> assets = assetsService.getAllAssets();
         final Map<String, Long> assetsIds = assets.stream()
                 .collect(Collectors.toMap(Asset::symbol, Asset::assetId));
@@ -47,6 +47,7 @@ public class AssetPriceServiceImpl implements AssetPriceService {
             assetPricesToInsert.addAll(assetPricesTemp);
         }
         assetsService.saveAssetPrice(assetPricesToInsert);
+        return constructAssetUpdateResult(assetPricesToInsert, assets);
     }
 
 
@@ -134,5 +135,21 @@ public class AssetPriceServiceImpl implements AssetPriceService {
                 .map(AssetPrice::getDateTime)
                 .findFirst()
                 .orElse(LocalDateTime.MIN);
+    }
+
+    private Map<String, Long> constructAssetUpdateResult(final List<AssetPrice> assetPrices, final List<Asset> assets) {
+        final Map<Long, Long> assetIdCounts = assetPrices.stream()
+                .collect(Collectors.groupingBy(AssetPrice::getAssetId, Collectors.counting()));
+
+        return assetIdCounts.entrySet().stream()
+                .collect(Collectors.toMap(entrySet -> findAssetNameById(entrySet.getKey(), assets), Map.Entry::getValue));
+    }
+
+    private String findAssetNameById(final Long assetId, final List<Asset> assets) {
+        return assets.stream()
+                .filter(asset -> asset.assetId().equals(assetId))
+                .map(Asset::name)
+                .findFirst()
+                .orElse("");
     }
 }

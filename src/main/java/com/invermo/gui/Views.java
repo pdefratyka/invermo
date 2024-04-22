@@ -9,6 +9,7 @@ public final class Views {
     public static final String PORTFOLIO_ViEW_RESOURCE = "/com/invermo/gui/portfolio/views/portfolio-view.fxml";
     public static final String NEW_POSITION_VIEW_RESOURCE = "/com/invermo/gui/portfolio/views/position/new-position-view.fxml";
     public static final String NEW_TRANSACTION_VIEW_RESOURCE = "/com/invermo/gui/portfolio/views/transaction/new-transaction-view.fxml";
+    public static final String TOAST_MESSAGE = "/com/invermo/gui/components/views/toast-message-view.fxml";
 
     private Views() {
     }

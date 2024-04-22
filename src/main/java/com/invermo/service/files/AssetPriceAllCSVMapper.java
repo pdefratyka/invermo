@@ -30,7 +30,7 @@ public class AssetPriceAllCSVMapper {
                 assetPrices.add(new AssetPrice(assetsIds.get(symbol), dateTime, price));
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return assetPrices;

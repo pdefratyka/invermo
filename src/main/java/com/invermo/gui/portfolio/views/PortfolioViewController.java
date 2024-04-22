@@ -1,6 +1,8 @@
 package com.invermo.gui.portfolio.views;
 
 import com.invermo.gui.Views;
+import com.invermo.gui.components.views.ToastMessageService;
+import com.invermo.gui.components.views.ToastMessageType;
 import com.invermo.gui.portfolio.dto.SinglePortfolioAsset;
 import com.invermo.gui.portfolio.views.position.NewPositionController;
 import com.invermo.persistance.entity.Position;
@@ -29,6 +31,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class PortfolioViewController implements Initializable {
@@ -116,13 +119,28 @@ public class PortfolioViewController implements Initializable {
     }
 
     @FXML
-    private void onRefreshPricesAction() {
-        System.out.println("On refresh prices");
-        FileChooser fileChooser = new FileChooser();
-        File file = fileChooser.showOpenDialog(null);
+    private void onRefreshPricesAction() throws IOException {
+        final FileChooser fileChooser = new FileChooser();
+        final File file = fileChooser.showOpenDialog(null);
         if (file != null) {
-            assetPriceService.updateAllAssetsPricesFromOneFile(file.getAbsolutePath());
+            try {
+                final Map<String, Long> result = assetPriceService.updateAllAssetsPricesFromOneFile(file.getAbsolutePath());
+                final String resultMessage = constructUpdatePricesResultText(result);
+                displayToastMessage(ToastMessageType.SUCCESS, "You successfully updated prices: " + resultMessage);
+            } catch (Exception ex) {
+                displayToastMessage(ToastMessageType.FAILURE, "There was a problem on updating prices");
+                throw ex;
+            }
         }
+
+    }
+
+    private String constructUpdatePricesResultText(final Map<String, Long> result) {
+        String message = "\n";
+        for (Map.Entry<String, Long> entry : result.entrySet()) {
+            message = message + entry.getKey() + ": " + entry.getValue() + "\n";
+        }
+        return message;
     }
 
     @FXML
@@ -155,6 +173,11 @@ public class PortfolioViewController implements Initializable {
         stage.setResizable(false);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.show();
+    }
+
+    private void displayToastMessage(final ToastMessageType toastMessageType, final String message) throws IOException {
+        Stage primaryStage = (Stage) assetsTable.getScene().getWindow();
+        ToastMessageService.displayToastMessage(primaryStage, toastMessageType, message);
     }
 
     private void configureColumns() {
