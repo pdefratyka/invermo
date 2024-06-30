@@ -21,7 +21,7 @@ public class TransactionsDatabaseQueries {
     }
 
     static String getAllTransactionsForPositions(final List<Long> positionsIds) {
-        return "select * from transactions where position_id in (" + getPositionsIdsSeparatedWithComa(positionsIds) + ")";
+        return "select * from transactions where position_id in (" + getPositionsIdsSeparatedWithComa(positionsIds) + ") order by date";
     }
 
     private static String getPositionsIdsSeparatedWithComa(final List<Long> positionsId) {

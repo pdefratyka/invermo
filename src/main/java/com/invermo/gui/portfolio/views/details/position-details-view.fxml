@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1144.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.invermo.gui.portfolio.views.details.PositionDetailsController">
+   <children>
+       <TableView fx:id="transactionsTable" layoutX="14.0" layoutY="14.0" prefHeight="517.0" prefWidth="1138.0">
+           <columns>
+               <TableColumn prefWidth="199.0" text="Date">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="dateTime" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn prefWidth="175.0" text="Type">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="transactionType" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn prefWidth="83.0" text="Number">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="number" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn prefWidth="117.0" text="Price Per One[PLN]">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="pricePerOne" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn prefWidth="117.0" text="Price [PLN]">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="price" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn prefWidth="116.0" text="Value [PLN]">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="value" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn prefWidth="104.0" text="Gain [PLN]">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="gain" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn prefWidth="103.0" text="Gain [%]">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="percentageGain" />
+                   </cellValueFactory>
+               </TableColumn>
+               <TableColumn prefWidth="91.0" text="Part [%]">
+                   <cellValueFactory>
+                       <PropertyValueFactory property="percentageAssetPart" />
+                   </cellValueFactory>
+               </TableColumn>
+           </columns>
+       </TableView>
+   </children>
+</AnchorPane>

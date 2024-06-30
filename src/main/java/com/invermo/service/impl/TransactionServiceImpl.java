@@ -23,4 +23,9 @@ public class TransactionServiceImpl implements TransactionService {
         }
         return transactionRepository.getAllTransactionsForPositions(positionIds);
     }
+
+    @Override
+    public List<Transaction> getAllTransactionForPosition(Long positionId) {
+        return getAllTransactionsForPositions(List.of(positionId));
+    }
 }

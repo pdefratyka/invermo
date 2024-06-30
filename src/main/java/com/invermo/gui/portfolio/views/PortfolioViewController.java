@@ -4,6 +4,7 @@ import com.invermo.gui.Views;
 import com.invermo.gui.components.views.ToastMessageService;
 import com.invermo.gui.components.views.ToastMessageType;
 import com.invermo.gui.portfolio.dto.SinglePortfolioAsset;
+import com.invermo.gui.portfolio.views.details.PositionDetailsController;
 import com.invermo.gui.portfolio.views.position.NewPositionController;
 import com.invermo.persistance.entity.Position;
 import com.invermo.service.AssetPriceService;
@@ -66,6 +67,15 @@ public class PortfolioViewController implements Initializable {
         final ObservableList<SinglePortfolioAsset> singlePortfolioAssets = FXCollections.observableArrayList();
         singlePortfolioAssets.addAll(styledAssets);
         assetsTable.setItems(singlePortfolioAssets);
+        assetsTable.setOnMouseClicked(event -> {
+            if (event.getClickCount() > 1) {
+                try {
+                    onPositionSelection();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     public void savePosition(final Position position) {
@@ -99,6 +109,7 @@ public class PortfolioViewController implements Initializable {
                 .map(singlePortfolioAsset ->
                         SinglePortfolioAsset.builder()
                                 .name(singlePortfolioAsset.getName())
+                                .positionId(singlePortfolioAsset.getPositionId())
                                 .assetType(singlePortfolioAsset.getAssetType())
                                 .positionType(singlePortfolioAsset.getPositionType())
                                 .number(singlePortfolioAsset.getNumber())
@@ -167,6 +178,27 @@ public class PortfolioViewController implements Initializable {
         Scene scene = new Scene(root, 1144, 700);
         Stage stage = new Stage();
         stage.setTitle("Transaction Creation");
+        stage.setScene(scene);
+        Stage primaryStage = (Stage) assetsTable.getScene().getWindow();
+        stage.initOwner(primaryStage);
+        stage.setResizable(false);
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.show();
+    }
+
+    @FXML
+    private void onPositionSelection() throws IOException {
+        final SinglePortfolioAsset singlePortfolioAsset = assetsTable.getSelectionModel().getSelectedItem();
+        System.out.println(singlePortfolioAsset);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(Views.POSITION_DETAILS_VIEW_RESOURCE));
+        Parent root = loader.load();
+        PositionDetailsController positionDetailsController = loader.getController();
+        positionDetailsController.setSinglePortfolioAsset(singlePortfolioAsset);
+        positionDetailsController.customInitialize();
+        Scene scene = new Scene(root, 1144, 700);
+        Stage stage = new Stage();
+        stage.setTitle(singlePortfolioAsset.getName() + " Details");
         stage.setScene(scene);
         Stage primaryStage = (Stage) assetsTable.getScene().getWindow();
         stage.initOwner(primaryStage);

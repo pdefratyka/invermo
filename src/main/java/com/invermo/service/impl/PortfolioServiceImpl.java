@@ -60,6 +60,7 @@ public class PortfolioServiceImpl implements PortfolioService {
                     .name(positionWithAsset.getAssetName())
                     .assetType(positionWithAsset.getAssetType().getName())
                     .positionType(positionWithAsset.getPositionType().name())
+                    .positionId(positionWithAsset.getPositionId())
                     .number(numberOfAsset)
                     .price(price)
                     .value(value)
@@ -69,7 +70,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             singlePortfolioAssets.add(portfolioAsset);
             portfolioAllValue = portfolioAllValue.add(value);
         }
-        if (portfolioAllValue.intValue()==BigDecimal.ZERO.intValue()) {
+        if (portfolioAllValue.intValue() == BigDecimal.ZERO.intValue()) {
             logger.info("Portfolio all value equals zero");
         } else {
             for (SinglePortfolioAsset singlePortfolioAsset : singlePortfolioAssets) {

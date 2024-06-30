@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,15 +16,15 @@ import java.math.BigDecimal;
 @Builder
 @Setter
 @ToString
-public class SinglePortfolioAsset {
-    private String name;
-    private String assetType;
-    private String positionType;
-    private Long positionId;
+public class SingleTransaction {
+    private Long transactionId;
+    private LocalDateTime dateTime;
+    private String transactionType;
     private BigDecimal number;
-    private BigDecimal price;
-    private BigDecimal value;
+    private String pricePerOne;
+    private String price;
+    private String value;
     private BigDecimal gain;
     private BigDecimal percentageGain;
-    private BigDecimal percentagePortfolioPart;
+    private BigDecimal percentageAssetPart;
 }
