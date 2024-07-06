@@ -1,5 +1,6 @@
 package com.invermo.service;
 
+import com.invermo.gui.facade.PositionDetailsFacade;
 import com.invermo.persistance.repository.AssetRepository;
 import com.invermo.persistance.repository.PortfolioRepository;
 import com.invermo.persistance.repository.PositionRepository;
@@ -16,6 +17,7 @@ import com.invermo.service.impl.AuthenticationServiceImpl;
 import com.invermo.service.impl.PortfolioServiceImpl;
 import com.invermo.service.impl.PositionServiceImpl;
 import com.invermo.service.impl.TransactionServiceImpl;
+import com.invermo.service.transaction.calculator.TransactionDetailsCalculator;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -33,6 +35,8 @@ public class ServiceManager {
     private static TransactionRepository transactionRepository;
     private static TransactionService transactionService;
     private static AssetPriceService assetPriceService;
+    private static PositionDetailsFacade positionDetailsFacade;
+    private static TransactionDetailsCalculator transactionDetailsCalculator;
 
     public static AuthenticationService getAuthenticationService() {
         if (authenticationService == null) {
@@ -74,6 +78,20 @@ public class ServiceManager {
             assetPriceService = new AssetPriceServiceImpl(getAssetsService());
         }
         return assetPriceService;
+    }
+
+    public static TransactionDetailsCalculator getTransactionDetailsCalculator() {
+        if (transactionDetailsCalculator == null) {
+            transactionDetailsCalculator = new TransactionDetailsCalculator(getTransactionService(), getAssetsService(), getPositionService());
+        }
+        return transactionDetailsCalculator;
+    }
+
+    public static PositionDetailsFacade getPositionDetailsFacade() {
+        if (positionDetailsFacade == null) {
+            positionDetailsFacade = new PositionDetailsFacade(getTransactionDetailsCalculator());
+        }
+        return positionDetailsFacade;
     }
 
     private static UserRepository getUserRepository() {

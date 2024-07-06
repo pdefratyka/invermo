@@ -9,6 +9,8 @@ public interface PositionService {
 
     List<Position> getAllPositionsForUser();
 
+    Position getPositionById(Long positionId);
+
     void addNewPosition(Position position);
 
     List<PositionWithAsset> getPositionsWithAssetsForUser();

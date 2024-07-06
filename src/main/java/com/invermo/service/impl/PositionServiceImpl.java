@@ -21,6 +21,13 @@ public class PositionServiceImpl implements PositionService {
     }
 
     @Override
+    public Position getPositionById(Long positionId) {
+        List<Position> positions = getAllPositionsForUser();
+        return positions.stream().filter(position -> position.getId().equals(positionId))
+                .findFirst().orElseThrow(() -> new RuntimeException("No position with given id found"));
+    }
+
+    @Override
     public void addNewPosition(final Position position) {
         final Long userId = ApplicationState.getUser().id();
         position.setUserId(userId);

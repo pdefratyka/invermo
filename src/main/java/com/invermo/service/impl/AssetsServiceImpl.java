@@ -5,6 +5,7 @@ import com.invermo.persistance.entity.AssetPrice;
 import com.invermo.persistance.repository.AssetRepository;
 import com.invermo.service.AssetsService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class AssetsServiceImpl implements AssetsService {
@@ -21,6 +22,13 @@ public class AssetsServiceImpl implements AssetsService {
     }
 
     @Override
+    public Asset getAssetById(Long assetId) {
+        final List<Asset> assets = getAllAssets();
+        return assets.stream().filter(asset -> asset.assetId().equals(assetId))
+                .findFirst().orElseThrow(() -> new RuntimeException("No asset found with given id"));
+    }
+
+    @Override
     public List<Asset> getAssetsBySearchParam(String searchValue) {
         return assetRepository.searchAssets(searchValue);
     }
@@ -33,6 +41,11 @@ public class AssetsServiceImpl implements AssetsService {
     @Override
     public List<AssetPrice> getLatestAssetsPrice() {
         return assetRepository.getLatestAssetsPrices();
+    }
+
+    @Override
+    public BigDecimal getLatestAssetPrice(Long assetId) {
+        return assetRepository.getLatestAssetPrice(assetId);
     }
 
     @Override

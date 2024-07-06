@@ -31,4 +31,6 @@ public class Transaction {
     private BigDecimal extraCosts;
     private String currency; // currency of asset for example dollar for nasdaq etf
     private String paidCurrency; // currency of payment for example PLN on xtb
+    private BigDecimal sellValue = BigDecimal.ZERO;
+    private BigDecimal numberOfSoldAssets = BigDecimal.ZERO;
 }

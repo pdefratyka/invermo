@@ -226,7 +226,7 @@ public class PortfolioViewController implements Initializable {
                         setStyle("-fx-background-color: lightgreen;");
                         setText(String.format("%,.2f", item));
                     } else if (item != null) {
-                        setStyle("-fx-background-color: red;");
+                        setStyle("-fx-background-color: salmon;");
                         setText(String.format("%,.2f", item));
                     }
                 }

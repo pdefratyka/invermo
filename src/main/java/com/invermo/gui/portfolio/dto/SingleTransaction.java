@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
@@ -20,11 +19,15 @@ public class SingleTransaction {
     private Long transactionId;
     private LocalDateTime dateTime;
     private String transactionType;
-    private BigDecimal number;
+    private String number;
     private String pricePerOne;
     private String price;
-    private String value;
-    private BigDecimal gain;
-    private BigDecimal percentageGain;
-    private BigDecimal percentageAssetPart;
+    private String numberOfSold;
+    private String numberOfActive;
+    private String realizedGain;
+    private String activeGain;
+    private String allGain;
+    private String percentageGain;
+    private String part;
+    private boolean isActive;
 }

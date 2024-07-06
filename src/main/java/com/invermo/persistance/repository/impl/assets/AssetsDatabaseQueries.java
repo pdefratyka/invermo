@@ -57,6 +57,15 @@ public final class AssetsDatabaseQueries {
                 "latest_dates ON ap.asset_id = latest_dates.asset_id AND ap.date = latest_dates.latest_date;";
     }
 
+    static String getLatestAssetPrice(final Long assetId) {
+        return "SELECT ap.price as price " +
+                "FROM invermo.asset_price ap " +
+                "WHERE ap.asset_id = " + assetId + " " +
+                "ORDER BY date DESC " +
+                "LIMIT 1";
+
+    }
+
     static String saveAssetPrice(final AssetPrice assetPrice) {
         return "INSERT INTO asset_price (asset_id, price, date)\n" +
                 "VALUES ('" +

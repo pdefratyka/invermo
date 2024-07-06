@@ -62,6 +62,12 @@ public class AssetRepositoryImpl extends AbstractRepository implements AssetRepo
     }
 
     @Override
+    public BigDecimal getLatestAssetPrice(final Long assetId) {
+        final String query = prepareGetLatestAssetPrice(assetId);
+        return executeQuery(query, this::extractLatestAssetPrice);
+    }
+
+    @Override
     public void saveAssetPrices(final List<AssetPrice> assetPrices) {
         final List<String> queries = new ArrayList<>();
         for (AssetPrice assetPrice : assetPrices) {
@@ -92,6 +98,17 @@ public class AssetRepositoryImpl extends AbstractRepository implements AssetRepo
                 assets.add(asset);
             }
             return assets;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error during processing ResultSet", ex);
+        }
+    }
+
+    private BigDecimal extractLatestAssetPrice(final ResultSet resultSet) {
+        try {
+            if (resultSet.next()) {
+                return resultSet.getBigDecimal("price");
+            }
+            return BigDecimal.ZERO;
         } catch (SQLException ex) {
             throw new RuntimeException("Error during processing ResultSet", ex);
         }
@@ -147,5 +164,9 @@ public class AssetRepositoryImpl extends AbstractRepository implements AssetRepo
 
     private String prepareSaveAssetPriceQuery(final AssetPrice assetPrice) {
         return AssetsDatabaseQueries.saveAssetPrice(assetPrice);
+    }
+
+    private String prepareGetLatestAssetPrice(final Long assetId) {
+        return AssetsDatabaseQueries.getLatestAssetPrice(assetId);
     }
 }
