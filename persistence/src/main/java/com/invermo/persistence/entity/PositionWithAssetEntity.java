@@ -1,8 +1,8 @@
-package com.invermo.application.persistance.entity;
+package com.invermo.persistence.entity;
 
-import com.invermo.application.persistance.enumeration.AssetType;
-import com.invermo.application.persistance.enumeration.Currency;
-import com.invermo.application.persistance.enumeration.PositionType;
+import com.invermo.persistence.enumeration.AssetType;
+import com.invermo.persistence.enumeration.Currency;
+import com.invermo.persistence.enumeration.PositionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class PositionWithAsset {
+public class PositionWithAssetEntity {
     private Long positionId;
     private Long assetId;
     private PositionType positionType;

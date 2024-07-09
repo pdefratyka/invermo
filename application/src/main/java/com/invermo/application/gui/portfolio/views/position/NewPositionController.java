@@ -1,11 +1,11 @@
 package com.invermo.application.gui.portfolio.views.position;
 
 import com.invermo.application.gui.portfolio.views.PortfolioViewController;
-import com.invermo.application.persistance.entity.Position;
-import com.invermo.application.persistance.enumeration.PositionType;
-import com.invermo.application.service.AssetsService;
 import com.invermo.application.service.ServiceManager;
+import com.invermo.application.service.impl.AssetService;
 import com.invermo.business.domain.Asset;
+import com.invermo.business.domain.Position;
+import com.invermo.business.enumeration.PositionType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -29,7 +29,7 @@ public class NewPositionController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        final AssetsService assetsService = ServiceManager.getAssetsService();
+        final AssetService assetsService = ServiceManager.getAssetsService();
         this.assets = assetsService.getAllAssets();
         initializeAssetPicker();
         initializePositionTypePicker();

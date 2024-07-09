@@ -1,12 +1,12 @@
 package com.invermo.application.gui.portfolio.views.transaction;
 
 import com.invermo.application.gui.components.DateTimePicker;
-import com.invermo.application.persistance.entity.PositionWithAsset;
-import com.invermo.application.persistance.entity.Transaction;
-import com.invermo.application.persistance.enumeration.TransactionType;
-import com.invermo.application.service.PositionService;
 import com.invermo.application.service.ServiceManager;
-import com.invermo.application.service.TransactionService;
+import com.invermo.application.service.impl.PositionService;
+import com.invermo.application.service.impl.TransactionService;
+import com.invermo.business.domain.PositionWithAsset;
+import com.invermo.business.domain.Transaction;
+import com.invermo.business.enumeration.TransactionType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

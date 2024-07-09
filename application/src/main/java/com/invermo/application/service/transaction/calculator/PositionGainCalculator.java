@@ -1,7 +1,7 @@
 package com.invermo.application.service.transaction.calculator;
 
-import com.invermo.application.persistance.entity.Transaction;
-import com.invermo.application.persistance.enumeration.TransactionType;
+import com.invermo.business.domain.Transaction;
+import com.invermo.business.enumeration.TransactionType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

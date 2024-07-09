@@ -1,6 +1,6 @@
-package com.invermo.application.persistance.repository.impl.portfolio.transaction;
+package com.invermo.persistence.repository.transactions;
 
-import com.invermo.application.persistance.entity.Transaction;
+import com.invermo.persistence.entity.TransactionEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TransactionsDatabaseQueries {
 
-    static String saveTransaction(final Transaction transaction) {
+    static String saveTransaction(final TransactionEntity transaction) {
         return "INSERT INTO transactions (position_id, date, number_of_asset, price_per_asset, currency_exchange, transaction_type)\n" +
                 "VALUES ('" +
                 transaction.getPositionId() + "','" +

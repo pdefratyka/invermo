@@ -2,6 +2,9 @@ package com.invermo.application.facade;
 
 import com.invermo.business.domain.Asset;
 import com.invermo.business.domain.AssetPrice;
+import com.invermo.business.domain.Position;
+import com.invermo.business.domain.PositionWithAsset;
+import com.invermo.business.domain.Transaction;
 import com.invermo.business.domain.User;
 import com.invermo.business.facade.OuterBusinessFacade;
 import lombok.AllArgsConstructor;
@@ -53,5 +56,33 @@ public class InnerApplicationFacade {
 
     public void saveAssetPrice(final List<AssetPrice> assetPrices) {
         outerBusinessFacade.saveAssetPrice(assetPrices);
+    }
+
+    public List<Position> getAllPositionsForUser(final Long userId) {
+        return outerBusinessFacade.getAllPositionsForUser(userId);
+    }
+
+    public Position getPositionById(final Long positionId, final Long userId) {
+        return outerBusinessFacade.getPositionById(positionId, userId);
+    }
+
+    public void addNewPosition(final Position position, final Long userId) {
+        outerBusinessFacade.addNewPosition(position, userId);
+    }
+
+    public List<PositionWithAsset> getPositionsWithAssetsForUser(final Long userId) {
+        return outerBusinessFacade.getPositionsWithAssetsForUser(userId);
+    }
+
+    public void saveTransaction(final Transaction transaction) {
+        outerBusinessFacade.saveTransaction(transaction);
+    }
+
+    public List<Transaction> getAllTransactionsForPositions(List<Long> positionIds) {
+        return outerBusinessFacade.getAllTransactionsForPositions(positionIds);
+    }
+
+    public List<Transaction> getAllTransactionForPosition(Long positionId) {
+        return outerBusinessFacade.getAllTransactionsForPositions(List.of(positionId));
     }
 }

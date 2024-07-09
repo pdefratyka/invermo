@@ -1,9 +1,8 @@
-package com.invermo.application.persistance.repository.impl.portfolio.transaction;
+package com.invermo.persistence.repository.transactions;
 
-import com.invermo.application.persistance.entity.Transaction;
-import com.invermo.application.persistance.enumeration.TransactionType;
-import com.invermo.application.persistance.repository.AbstractRepository;
-import com.invermo.application.persistance.repository.TransactionRepository;
+import com.invermo.persistence.entity.TransactionEntity;
+import com.invermo.persistence.enumeration.TransactionType;
+import com.invermo.persistence.repository.AbstractRepository;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -12,25 +11,23 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionRepositoryImpl extends AbstractRepository implements TransactionRepository {
+public class TransactionRepository extends AbstractRepository {
 
-    @Override
-    public void saveTransaction(final Transaction transaction) {
+    public void saveTransaction(final TransactionEntity transaction) {
         final String query = prepareSaveTransactionQuery(transaction);
         execute(query);
     }
 
-    @Override
-    public List<Transaction> getAllTransactionsForPositions(final List<Long> positionsIds) {
+    public List<TransactionEntity> getAllTransactionsForPositions(final List<Long> positionsIds) {
         final String query = prepareGetAllTransactionsForPositionsQuery(positionsIds);
         return executeQuery(query, this::extractTransactionsFromResultSet);
     }
 
-    private List<Transaction> extractTransactionsFromResultSet(final ResultSet resultSet) {
+    private List<TransactionEntity> extractTransactionsFromResultSet(final ResultSet resultSet) {
         try {
-            final List<Transaction> transactions = new ArrayList<>();
+            final List<TransactionEntity> transactions = new ArrayList<>();
             while (resultSet.next()) {
-                final Transaction transaction = buildTransactionFromResultSet(resultSet);
+                final TransactionEntity transaction = buildTransactionFromResultSet(resultSet);
                 transactions.add(transaction);
             }
             return transactions;
@@ -39,7 +36,7 @@ public class TransactionRepositoryImpl extends AbstractRepository implements Tra
         }
     }
 
-    private Transaction buildTransactionFromResultSet(final ResultSet resultSet) throws SQLException {
+    private TransactionEntity buildTransactionFromResultSet(final ResultSet resultSet) throws SQLException {
         final Long transactionId = resultSet.getLong("transaction_id");
         final Long positionId = resultSet.getLong("position_id");
         final LocalDateTime date = resultSet.getObject("date", LocalDateTime.class);
@@ -47,7 +44,7 @@ public class TransactionRepositoryImpl extends AbstractRepository implements Tra
         final BigDecimal pricePerAsset = resultSet.getBigDecimal("price_per_asset");
         final BigDecimal currencyExchange = resultSet.getBigDecimal("currency_exchange");
         final String transactionType = resultSet.getString("transaction_type");
-        return Transaction.builder()
+        return TransactionEntity.builder()
                 .transactionId(transactionId)
                 .positionId(positionId)
                 .dateTime(date)
@@ -58,7 +55,7 @@ public class TransactionRepositoryImpl extends AbstractRepository implements Tra
                 .build();
     }
 
-    private String prepareSaveTransactionQuery(final Transaction transaction) {
+    private String prepareSaveTransactionQuery(final TransactionEntity transaction) {
         return TransactionsDatabaseQueries.saveTransaction(transaction);
     }
 

@@ -1,17 +1,14 @@
 package com.invermo.application.service.impl;
 
 import com.invermo.application.gui.portfolio.dto.SinglePortfolioAsset;
-import com.invermo.application.persistance.entity.PositionWithAsset;
-import com.invermo.application.persistance.entity.Transaction;
-import com.invermo.application.persistance.enumeration.Currency;
-import com.invermo.application.service.AssetsService;
 import com.invermo.application.service.PortfolioService;
-import com.invermo.application.service.PositionService;
-import com.invermo.application.service.TransactionService;
 import com.invermo.application.service.transaction.calculator.NumberOfAssetCalculator;
 import com.invermo.application.service.transaction.calculator.PositionGainCalculator;
 import com.invermo.application.service.transaction.calculator.PositionValueCalculator;
 import com.invermo.business.domain.AssetPrice;
+import com.invermo.business.domain.PositionWithAsset;
+import com.invermo.business.domain.Transaction;
+import com.invermo.business.enumeration.Currency;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -31,11 +28,11 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     private final Map<String, BigDecimal> latestPrices = new HashMap<>();
 
-    private final AssetsService assetsService;
+    private final AssetService assetsService;
     private final PositionService positionService;
     private final TransactionService transactionService;
 
-    public PortfolioServiceImpl(AssetsService assetsService, PositionService positionService, TransactionService transactionService) {
+    public PortfolioServiceImpl(AssetService assetsService, PositionService positionService, TransactionService transactionService) {
         this.assetsService = assetsService;
         this.positionService = positionService;
         this.transactionService = transactionService;

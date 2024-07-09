@@ -1,6 +1,6 @@
 package com.invermo.application.gui.portfolio.dto;
 
-import com.invermo.application.persistance.entity.Transaction;
+import com.invermo.business.domain.Transaction;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

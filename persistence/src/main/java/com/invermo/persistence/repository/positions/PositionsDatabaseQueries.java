@@ -1,13 +1,13 @@
-package com.invermo.application.persistance.repository.impl.portfolio.position;
+package com.invermo.persistence.repository.positions;
 
-import com.invermo.application.persistance.entity.Position;
+import com.invermo.persistence.entity.PositionEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class PositionsDatabaseQueries {
 
-    static String addNewPosition(final Position position) {
+    static String addNewPosition(final PositionEntity position) {
         return "INSERT INTO positions (asset_id, user_id, position_type)\n" +
                 "VALUES ('" +
                 position.getAssetId() + "','" +

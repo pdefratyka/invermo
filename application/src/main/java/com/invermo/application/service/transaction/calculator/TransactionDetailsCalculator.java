@@ -1,13 +1,13 @@
 package com.invermo.application.service.transaction.calculator;
 
 import com.invermo.application.gui.portfolio.dto.SingleTransactionRecord;
-import com.invermo.application.persistance.entity.Transaction;
-import com.invermo.application.persistance.enumeration.TransactionType;
-import com.invermo.application.service.AssetsService;
-import com.invermo.application.service.PositionService;
-import com.invermo.application.service.TransactionService;
+import com.invermo.application.service.impl.AssetService;
+import com.invermo.application.service.impl.PositionService;
+import com.invermo.application.service.impl.TransactionService;
 import com.invermo.business.domain.Asset;
 import com.invermo.business.domain.AssetPrice;
+import com.invermo.business.domain.Transaction;
+import com.invermo.business.enumeration.TransactionType;
 import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
@@ -22,7 +22,7 @@ import java.util.Optional;
 public class TransactionDetailsCalculator {
 
     private final TransactionService transactionService;
-    private final AssetsService assetsService;
+    private final AssetService assetsService;
     private final PositionService positionService;
 
     public List<SingleTransactionRecord> getSingleTransactionsForPosition(final Long positionId) {
@@ -116,7 +116,7 @@ public class TransactionDetailsCalculator {
 
     private void enrichSingleTransactionRecordsOfPart(final List<SingleTransactionRecord> transactionRecords) {
         final Optional<BigDecimal> assetNumber = transactionRecords.stream()
-                .filter(t->t.getTransaction().getTransactionType()==TransactionType.BUY)
+                .filter(t -> t.getTransaction().getTransactionType() == TransactionType.BUY)
                 .map(SingleTransactionRecord::getNumberOfActive)
                 .reduce(BigDecimal::add);
         if (assetNumber.isPresent() && assetNumber.get().compareTo(BigDecimal.ZERO) > 0) {

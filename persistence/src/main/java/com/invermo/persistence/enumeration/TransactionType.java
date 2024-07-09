@@ -1,4 +1,4 @@
-package com.invermo.application.persistance.enumeration;
+package com.invermo.persistence.enumeration;
 
 public enum TransactionType {
     BUY, SELL, DIVIDEND;

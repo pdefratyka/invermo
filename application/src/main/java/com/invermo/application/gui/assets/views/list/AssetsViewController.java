@@ -3,8 +3,8 @@ package com.invermo.application.gui.assets.views.list;
 import com.invermo.application.gui.Views;
 import com.invermo.application.gui.assets.components.SingleAssetComponent;
 import com.invermo.application.gui.assets.views.creation.CreateAssetViewController;
-import com.invermo.application.service.AssetsService;
 import com.invermo.application.service.ServiceManager;
+import com.invermo.application.service.impl.AssetService;
 import com.invermo.business.domain.Asset;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +29,7 @@ public class AssetsViewController implements Initializable {
     @FXML
     private TextField searchField;
 
-    private AssetsService assetsService;
+    private AssetService assetsService;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

@@ -2,6 +2,8 @@ package com.invermo.business.service;
 
 import com.invermo.business.facade.InnerBusinessFacade;
 import com.invermo.business.service.persistence.AssetPersistenceService;
+import com.invermo.business.service.persistence.PositionPersistenceService;
+import com.invermo.business.service.persistence.TransactionPersistenceService;
 import com.invermo.business.service.persistence.UserPersistenceService;
 
 public class ServiceManager {
@@ -10,6 +12,10 @@ public class ServiceManager {
     private static AssetService assetService;
     private static UserPersistenceService userPersistenceService;
     private static AssetPersistenceService assetPersistenceService;
+    private static PositionPersistenceService positionPersistenceService;
+    private static PositionService positionService;
+    private static TransactionPersistenceService transactionPersistenceService;
+    private static TransactionService transactionService;
 
     public static UserPersistenceService getUserPersistenceService() {
         if (userPersistenceService == null) {
@@ -37,5 +43,33 @@ public class ServiceManager {
             assetService = new AssetService(getAssetPersistenceService());
         }
         return assetService;
+    }
+
+    public static PositionPersistenceService getPositionPersistenceService() {
+        if (positionPersistenceService == null) {
+            positionPersistenceService = new PositionPersistenceService(InnerBusinessFacade.getInstance());
+        }
+        return positionPersistenceService;
+    }
+
+    public static PositionService getPositionService() {
+        if (positionService == null) {
+            positionService = new PositionService(getPositionPersistenceService());
+        }
+        return positionService;
+    }
+
+    public static TransactionPersistenceService getTransactionPersistenceService() {
+        if (transactionPersistenceService == null) {
+            transactionPersistenceService = new TransactionPersistenceService(InnerBusinessFacade.getInstance());
+        }
+        return transactionPersistenceService;
+    }
+
+    public static TransactionService getTransactionService() {
+        if (transactionService == null) {
+            transactionService = new TransactionService(getTransactionPersistenceService());
+        }
+        return transactionService;
     }
 }

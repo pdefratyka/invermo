@@ -2,9 +2,14 @@ package com.invermo.business.facade;
 
 import com.invermo.business.domain.Asset;
 import com.invermo.business.domain.AssetPrice;
+import com.invermo.business.domain.Position;
+import com.invermo.business.domain.PositionWithAsset;
+import com.invermo.business.domain.Transaction;
 import com.invermo.business.domain.User;
 import com.invermo.business.service.AssetService;
 import com.invermo.business.service.AuthenticationService;
+import com.invermo.business.service.PositionService;
+import com.invermo.business.service.TransactionService;
 import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
@@ -16,6 +21,8 @@ public class OuterBusinessFacade {
 
     private final AuthenticationService authenticationService;
     private final AssetService assetService;
+    private final PositionService positionService;
+    private final TransactionService transactionService;
 
     public Optional<User> login(final String login, final String password) {
         System.out.println("test from business facade");
@@ -56,5 +63,33 @@ public class OuterBusinessFacade {
 
     public void saveAssetPrice(final List<AssetPrice> assetPrices) {
         assetService.saveAssetPrice(assetPrices);
+    }
+
+    public List<Position> getAllPositionsForUser(final Long userId) {
+        return positionService.getAllPositionsForUser(userId);
+    }
+
+    public Position getPositionById(final Long positionId, final Long userId) {
+        return positionService.getPositionById(positionId, userId);
+    }
+
+    public void addNewPosition(final Position position, final Long userId) {
+        positionService.addNewPosition(position, userId);
+    }
+
+    public List<PositionWithAsset> getPositionsWithAssetsForUser(final Long userId) {
+        return positionService.getPositionsWithAssetsForUser(userId);
+    }
+
+    public void saveTransaction(final Transaction transaction) {
+        transactionService.saveTransaction(transaction);
+    }
+
+    public List<Transaction> getAllTransactionsForPositions(List<Long> positionIds) {
+        return transactionService.getAllTransactionsForPositions(positionIds);
+    }
+
+    public List<Transaction> getAllTransactionForPosition(Long positionId) {
+        return transactionService.getAllTransactionsForPositions(List.of(positionId));
     }
 }

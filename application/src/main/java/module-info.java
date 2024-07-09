@@ -31,6 +31,5 @@ module com.invermo {
     exports com.invermo.application.gui.components.views;
     exports com.invermo.application.gui.portfolio.views.position;
     exports com.invermo.application.gui.portfolio.views.transaction;
-    exports com.invermo.application.persistance.entity;
     exports com.invermo.application.gui.portfolio.views;
 }

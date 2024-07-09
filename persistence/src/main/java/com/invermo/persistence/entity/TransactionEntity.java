@@ -1,6 +1,6 @@
-package com.invermo.application.persistance.entity;
+package com.invermo.persistence.entity;
 
-import com.invermo.application.persistance.enumeration.TransactionType;
+import com.invermo.persistence.enumeration.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-public class Transaction {
+public class TransactionEntity {
     private Long transactionId;
     private Long positionId;
     private LocalDateTime dateTime;
