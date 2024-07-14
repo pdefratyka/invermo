@@ -2,6 +2,7 @@ package com.invermo.application.service;
 
 import com.invermo.application.facade.InnerApplicationFacade;
 import com.invermo.application.gui.facade.PositionDetailsFacade;
+import com.invermo.application.gui.statistics.service.StatisticsService;
 import com.invermo.application.service.impl.AssetPriceService;
 import com.invermo.application.service.impl.AssetService;
 import com.invermo.application.service.impl.AuthenticationService;
@@ -23,6 +24,7 @@ public class ServiceManager {
     private static TransactionService transactionService;
     private static AssetPriceService assetPriceService;
     private static PositionDetailsFacade positionDetailsFacade;
+    private static StatisticsService statisticsService;
 
     public static AuthenticationService getAuthenticationService() {
         if (authenticationService == null) {
@@ -78,5 +80,12 @@ public class ServiceManager {
             innerApplicationFacade = new InnerApplicationFacade(BusinessFacadeFactory.createOuterBusinessFacade());
         }
         return innerApplicationFacade;
+    }
+
+    public static StatisticsService getStatisticsService() {
+        if (statisticsService == null) {
+            statisticsService = new StatisticsService(getInnerApplicationFacade());
+        }
+        return statisticsService;
     }
 }

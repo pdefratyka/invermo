@@ -1,6 +1,7 @@
 package com.invermo.business.service;
 
 import com.invermo.business.domain.AssetPrice;
+import com.invermo.business.domain.Position;
 import com.invermo.business.domain.PositionGain;
 import com.invermo.business.domain.PositionWithAsset;
 import com.invermo.business.domain.Transaction;
@@ -23,6 +24,44 @@ public class PositionGainService {
     private final TransactionService transactionService;
     private final PositionService positionService;
     private final AssetService assetService;
+
+    public PositionGain getMonthlyPositionGainByUserId(final Long userId) {
+        final List<Position> positions = positionService.getAllPositionsForUser(userId);
+        final List<PositionGain> positionGains = new ArrayList<>();
+        for (Long positionId : positions.stream().map(Position::getId).toList()) {
+            PositionGain positionGain = getMonthlyPositionGain(positionId);
+            positionGains.add(positionGain);
+        }
+        return sumPositionGains(positionGains);
+    }
+
+    private PositionGain sumPositionGains(final List<PositionGain> positionGains) {
+        // Monthly Gain
+        final Map<YearMonth, BigDecimal> monthlyGain = getMonthlyPositionGainSummary(positionGains);
+        final PositionGain positionGain = new PositionGain();
+        positionGain.setGainByMonth(monthlyGain);
+        setCumulativeGain(positionGain);
+        return positionGain;
+    }
+
+    private Map<YearMonth, BigDecimal> getMonthlyPositionGainSummary(final List<PositionGain> positionGains) {
+        final List<Map<YearMonth, BigDecimal>> listOfMonthlyGains = positionGains.stream().map(PositionGain::getGainByMonth).toList();
+        final Map<YearMonth, BigDecimal> result = new TreeMap<>();
+        YearMonth yearMonth = YearMonth.of(2022, 5);
+        while (!yearMonth.isAfter(YearMonth.now())) {
+            BigDecimal value = BigDecimal.ZERO;
+            for (Map<YearMonth, BigDecimal> c : listOfMonthlyGains) {
+                BigDecimal temp = c.get(yearMonth);
+                if (temp != null) {
+                    value = value.add(temp);
+                }
+            }
+            result.put(yearMonth, value);
+            yearMonth = yearMonth.plusMonths(1);
+        }
+
+        return result;
+    }
 
     public PositionGain getMonthlyPositionGain(final Long positionId) {
         final List<Transaction> transactions = transactionService.getAllTransactionForPosition(positionId);
@@ -75,30 +114,6 @@ public class PositionGainService {
         positionGain.setCumulativeGainByMonth(cumulativeGain);
     }
 
-    public void setPercentagePositionGainForMonth(final PositionGain positionGain) {
-        if (positionGain.getGainByMonth().isEmpty()) {
-            return;
-        }
-        final Map<YearMonth, BigDecimal> gainByMonth = positionGain.getGainByMonth();
-        final Map<YearMonth, BigDecimal> cumulativeGain = new TreeMap<>();
-
-        final List<YearMonth> yearMonths = new ArrayList<>();
-        YearMonth yearMonth = positionGain.getGainByMonth().keySet().stream().sorted().toList().get(0);
-        while (!yearMonth.isAfter(YearMonth.now())) {
-            yearMonths.add(yearMonth);
-            yearMonth = yearMonth.plusMonths(1);
-        }
-
-        for (YearMonth tempYearMonth : yearMonths) {
-            BigDecimal gain = gainByMonth.entrySet().stream()
-                    .filter(entry -> !entry.getKey().isAfter(tempYearMonth))
-                    .map(Map.Entry::getValue)
-                    .reduce(BigDecimal.ZERO, BigDecimal::add);
-            cumulativeGain.put(tempYearMonth, gain);
-        }
-        positionGain.setCumulativeGainByMonth(cumulativeGain);
-    }
-
     private BigDecimal setPositionGainForMonth(final List<Transaction> transactions, final List<AssetPrice> assetPrices,
                                                final List<AssetPrice> currencyPrices, final YearMonth yearMonth,
                                                final PositionGain positionGain) {
@@ -119,7 +134,7 @@ public class PositionGainService {
 
         final BigDecimal gain = endValue.subtract(startValue);
         BigDecimal percentageGain = BigDecimal.ZERO;
-        if (startValue.compareTo(BigDecimal.ZERO) >0) {
+        if (startValue.compareTo(BigDecimal.ZERO) > 0) {
             percentageGain = gain.divide(startValue, 6, RoundingMode.FLOOR).multiply(BigDecimal.valueOf(100));
         }
         positionGain.getGainByMonth().put(yearMonth, gain);

@@ -95,4 +95,8 @@ public class InnerApplicationFacade {
     public PositionGain getPositionGain(Long positionId, Long userId) {
         return outerBusinessFacade.getPositionGain(positionId, userId);
     }
+
+    public PositionGain getPositionsGainByUserId(Long userId) {
+        return outerBusinessFacade.getPositionsGainByUserId(userId);
+    }
 }

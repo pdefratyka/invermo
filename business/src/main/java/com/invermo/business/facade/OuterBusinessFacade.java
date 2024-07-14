@@ -106,4 +106,8 @@ public class OuterBusinessFacade {
     public PositionGain getPositionGain(Long positionId, Long userId){
         return positionGainService.getMonthlyPositionGain(positionId);
     }
+
+    public PositionGain getPositionsGainByUserId(Long userId){
+        return positionGainService.getMonthlyPositionGainByUserId(userId);
+    }
 }

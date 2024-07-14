@@ -41,6 +41,7 @@ public class AssetPriceService {
                 .collect(Collectors.groupingBy(AssetPrice::getAssetId));
         final List<AssetPrice> assetPricesToInsert = new ArrayList<>();
         for (Map.Entry<Long, List<AssetPrice>> entry : assetPriceMap.entrySet()) {
+           // final String assetSymbol = assetsIds.entrySet().stream().filter(e -> e.getValue().equals(entry.getKey())).findFirst().get().getKey();
             List<AssetPrice> assetPricesTemp = updateAssetPriceByAsset(entry.getValue());
             assetPricesToInsert.addAll(assetPricesTemp);
         }
@@ -117,6 +118,20 @@ public class AssetPriceService {
         assetPrices.sort(Comparator.comparing(AssetPrice::getDateTime));
         final List<AssetPrice> assetsPricesToInsert = assetPrices.stream()
                 .filter(assetPrice -> assetPrice.getDateTime().isAfter(latestAssetPriceDate))
+                .toList();
+        logger.info("Number of assets to update: " + assetsPricesToInsert.size());
+        return assetsPricesToInsert;
+    }
+
+    private List<AssetPrice> updateAllAssetPriceByAsset(List<AssetPrice> assetPrices, final String assetSymbol) {
+        if (assetPrices.isEmpty()) {
+            return List.of();
+        }
+        final List<LocalDateTime> latestAssetPriceDate = assetsService.getAssetWithPriceByAssetSymbol(assetSymbol).stream()
+                .map(AssetPrice::getDateTime).toList();
+        assetPrices.sort(Comparator.comparing(AssetPrice::getDateTime));
+        final List<AssetPrice> assetsPricesToInsert = assetPrices.stream()
+                .filter(assetPrice -> !latestAssetPriceDate.contains(assetPrice.getDateTime()))
                 .toList();
         logger.info("Number of assets to update: " + assetsPricesToInsert.size());
         return assetsPricesToInsert;

@@ -14,4 +14,5 @@ public class PositionGain {
     private Map<YearMonth, BigDecimal> gainByMonth;
     private Map<YearMonth, BigDecimal> cumulativeGainByMonth;
     private Map<YearMonth, BigDecimal> percentageGainByMonth;
+    private Map<YearMonth, BigDecimal> cumulativePercentageGainByMonth;
 }
