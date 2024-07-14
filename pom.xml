@@ -6,12 +6,17 @@
 
     <groupId>com</groupId>
     <artifactId>invermo</artifactId>
-    <version>0.1.7</version>
+    <version>0.1.8</version>
+    <packaging>pom</packaging>
     <name>invermo</name>
+    <modules>
+        <module>business</module>
+        <module>application</module>
+        <module>persistence</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <postgres-version>42.7.1</postgres-version>
         <javafx.version>17.0.6</javafx.version>
         <lombok.version>1.18.30</lombok.version>
@@ -21,16 +26,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>${javafx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>${javafx.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -82,7 +77,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.invermo/com.invermo.Main</mainClass>
+                            <mainClass>com.invermo/com.invermo.application.Main</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
@@ -106,7 +101,7 @@
                             <transformers>
                                 <transformer implementation=
                                                      "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.invermo.Executable</mainClass>
+                                    <mainClass>com.invermo.application.Executable</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
