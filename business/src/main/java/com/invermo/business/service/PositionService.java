@@ -27,6 +27,10 @@ public class PositionService {
         positionPersistenceService.addNewPosition(position);
     }
 
+    public PositionWithAsset getPositionWithAssetByPositionId(final Long positionId) {
+        return positionPersistenceService.getPositionWithAssetByPositionId(positionId);
+    }
+
     public List<PositionWithAsset> getPositionsWithAssetsForUser(final Long userId) {
         return positionPersistenceService.getPositionsWithAssetsForUser(userId);
     }

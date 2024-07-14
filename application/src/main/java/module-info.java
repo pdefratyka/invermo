@@ -21,6 +21,7 @@ module com.invermo {
     opens com.invermo.application.gui.components to javafx.fxml;
 
     opens com.invermo.application.gui.components.views to javafx.fxml;
+    opens com.invermo.application.gui.components.views.charts.line to javafx.fxml;
 
     exports com.invermo.application;
     exports com.invermo.application.gui.login;
@@ -29,6 +30,8 @@ module com.invermo {
     exports com.invermo.application.gui.assets.views.list;
     exports com.invermo.application.gui.assets.components;
     exports com.invermo.application.gui.components.views;
+    exports com.invermo.application.gui.components.views.charts.line;
+    exports com.invermo.application.gui.components.views.charts.model;
     exports com.invermo.application.gui.portfolio.views.position;
     exports com.invermo.application.gui.portfolio.views.transaction;
     exports com.invermo.application.gui.portfolio.views;

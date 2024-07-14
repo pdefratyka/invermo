@@ -1,8 +1,8 @@
 package com.invermo.application.gui.login;
 
 import com.invermo.application.gui.Views;
-import com.invermo.application.service.AuthenticationService;
 import com.invermo.application.service.ServiceManager;
+import com.invermo.application.service.impl.AuthenticationService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;

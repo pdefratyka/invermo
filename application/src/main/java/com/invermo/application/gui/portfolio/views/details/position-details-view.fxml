@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.invermo.application.gui.components.views.charts.line.InvermoBarChart?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane prefHeight="700.0" prefWidth="1144.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.invermo.application.gui.portfolio.views.details.PositionDetailsController">
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.VBox?>
+<AnchorPane prefHeight="1000.0" prefWidth="1144.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.invermo.application.gui.portfolio.views.details.PositionDetailsController"
+            fx:id="mainPane">
     <children>
-        <TableView fx:id="transactionsTable" layoutX="14.0" layoutY="14.0" prefHeight="517.0" prefWidth="1117.0">
+        <TableView fx:id="transactionsTable" layoutX="14.0" layoutY="14.0" prefHeight="320.0" prefWidth="1117.0">
             <columns>
                 <TableColumn text="Date">
                     <cellValueFactory>
@@ -71,5 +76,14 @@
                 </TableColumn>
             </columns>
         </TableView>
+        <ScrollPane layoutX="14.0" layoutY="350.0" prefHeight="400.0" prefWidth="1117.0">
+            <content>
+                <VBox>
+                    <InvermoBarChart fx:id="cumulativeGainChart" prefHeight="320.0" prefWidth="1050.0"/>
+                    <InvermoBarChart fx:id="gainChart" prefHeight="320.0" prefWidth="1050.0"/>
+                    <InvermoBarChart fx:id="percentageGainChart" prefHeight="320.0" prefWidth="1050.0"/>
+                </VBox>
+            </content>
+        </ScrollPane>
     </children>
 </AnchorPane>

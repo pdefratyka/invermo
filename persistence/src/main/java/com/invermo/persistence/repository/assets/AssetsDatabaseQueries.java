@@ -43,7 +43,7 @@ public final class AssetsDatabaseQueries {
 
     static String getAssetWithPriceByAssetSymbol(final String symbol) {
         return "select ap.date as date, ap.price as price, ap.asset_id as asset_id " +
-                "from asset_price ap right join invermo.assets a on ap.asset_id=a.asset_id " +
+                "from asset_price ap inner join invermo.assets a on ap.asset_id=a.asset_id " +
                 "where a.symbol='" + symbol + "'";
     }
 

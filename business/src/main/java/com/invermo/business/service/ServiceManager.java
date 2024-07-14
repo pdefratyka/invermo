@@ -16,6 +16,8 @@ public class ServiceManager {
     private static PositionService positionService;
     private static TransactionPersistenceService transactionPersistenceService;
     private static TransactionService transactionService;
+    private static TransactionDetailsCalculator transactionDetailsCalculator;
+    private static PositionGainService positionGainService;
 
     public static UserPersistenceService getUserPersistenceService() {
         if (userPersistenceService == null) {
@@ -71,5 +73,19 @@ public class ServiceManager {
             transactionService = new TransactionService(getTransactionPersistenceService());
         }
         return transactionService;
+    }
+
+    public static TransactionDetailsCalculator getTransactionDetailsCalculator() {
+        if (transactionDetailsCalculator == null) {
+            transactionDetailsCalculator = new TransactionDetailsCalculator(getTransactionService(), getAssetService(), getPositionService());
+        }
+        return transactionDetailsCalculator;
+    }
+
+    public static PositionGainService getPositionGainService() {
+        if (positionGainService == null) {
+            positionGainService = new PositionGainService(getTransactionService(), getPositionService(), getAssetService());
+        }
+        return positionGainService;
     }
 }

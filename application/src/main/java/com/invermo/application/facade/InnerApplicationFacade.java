@@ -3,7 +3,9 @@ package com.invermo.application.facade;
 import com.invermo.business.domain.Asset;
 import com.invermo.business.domain.AssetPrice;
 import com.invermo.business.domain.Position;
+import com.invermo.business.domain.PositionGain;
 import com.invermo.business.domain.PositionWithAsset;
+import com.invermo.business.domain.SingleTransactionRecord;
 import com.invermo.business.domain.Transaction;
 import com.invermo.business.domain.User;
 import com.invermo.business.facade.OuterBusinessFacade;
@@ -84,5 +86,13 @@ public class InnerApplicationFacade {
 
     public List<Transaction> getAllTransactionForPosition(Long positionId) {
         return outerBusinessFacade.getAllTransactionsForPositions(List.of(positionId));
+    }
+
+    public List<SingleTransactionRecord> getSingleTransactionsForPosition(Long positionId, Long userId) {
+        return outerBusinessFacade.getSingleTransactionsForPosition(positionId, userId);
+    }
+
+    public PositionGain getPositionGain(Long positionId, Long userId) {
+        return outerBusinessFacade.getPositionGain(positionId, userId);
     }
 }

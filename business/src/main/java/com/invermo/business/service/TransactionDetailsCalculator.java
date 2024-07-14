@@ -1,11 +1,9 @@
-package com.invermo.application.service.transaction.calculator;
+package com.invermo.business.service;
 
-import com.invermo.application.gui.portfolio.dto.SingleTransactionRecord;
-import com.invermo.application.service.impl.AssetService;
-import com.invermo.application.service.impl.PositionService;
-import com.invermo.application.service.impl.TransactionService;
 import com.invermo.business.domain.Asset;
 import com.invermo.business.domain.AssetPrice;
+import com.invermo.business.domain.PositionGain;
+import com.invermo.business.domain.SingleTransactionRecord;
 import com.invermo.business.domain.Transaction;
 import com.invermo.business.enumeration.TransactionType;
 import lombok.AllArgsConstructor;
@@ -25,7 +23,7 @@ public class TransactionDetailsCalculator {
     private final AssetService assetsService;
     private final PositionService positionService;
 
-    public List<SingleTransactionRecord> getSingleTransactionsForPosition(final Long positionId) {
+    public List<SingleTransactionRecord> getSingleTransactionsForPosition(final Long positionId, final Long userId) {
         final List<Transaction> transactions = transactionService.getAllTransactionForPosition(positionId);
         final List<SingleTransactionRecord> transactionRecords = new ArrayList<>();
         for (Transaction transaction : transactions) {
@@ -34,10 +32,14 @@ public class TransactionDetailsCalculator {
         }
         enrichSingleTransactionRecordsOfRealizedGain(transactionRecords, transactions);
         enrichSingleTransactionRecordsOfNumberOfActive(transactionRecords);
-        enrichSingleTransactionRecordsOfActiveGain(transactionRecords);
+        enrichSingleTransactionRecordsOfActiveGain(transactionRecords, userId);
         enrichSingleTransactionRecordsOfAllGain(transactionRecords);
         enrichSingleTransactionRecordsOfPart(transactionRecords);
         return transactionRecords;
+    }
+
+    public PositionGain getPositionGain(final Long positionId, final Long userId) {
+        return null;
     }
 
     private SingleTransactionRecord mapToSingleTransactionRecord(final Transaction transaction) {
@@ -81,8 +83,8 @@ public class TransactionDetailsCalculator {
         transactionRecords.forEach(transaction -> transaction.setNumberOfActive(transaction.getTransaction().getNumberOfAsset().subtract(transaction.getNumberOfSold())));
     }
 
-    private void enrichSingleTransactionRecordsOfActiveGain(final List<SingleTransactionRecord> transactionRecords) {
-        final Long assetId = positionService.getPositionById(transactionRecords.get(0).getTransaction().getPositionId()).getAssetId();
+    private void enrichSingleTransactionRecordsOfActiveGain(final List<SingleTransactionRecord> transactionRecords, final Long userId) {
+        final Long assetId = positionService.getPositionById(transactionRecords.get(0).getTransaction().getPositionId(), userId).getAssetId();
         final Asset asset = assetsService.getAssetById(assetId);
         final BigDecimal currentAssetPrice = assetsService.getLatestAssetPrice(assetId);
         final BigDecimal currentCurrencyPrice = getLatestPrice(asset.currency() + "/PLN");

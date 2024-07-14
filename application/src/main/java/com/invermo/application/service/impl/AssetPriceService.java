@@ -1,6 +1,5 @@
 package com.invermo.application.service.impl;
 
-import com.invermo.application.service.AssetPriceService;
 import com.invermo.application.service.files.AssetPriceAllCSVMapper;
 import com.invermo.application.service.files.AssetPriceBICSVMapper;
 import com.invermo.application.service.files.AssetPriceCSVMapper;
@@ -18,15 +17,15 @@ import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class AssetPriceServiceImpl implements AssetPriceService {
+public class AssetPriceService {
 
-    private static final Logger logger = Logger.getLogger(AssetPriceServiceImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(AssetPriceService.class.getName());
     private static final String ASSET_PRICES_FILES_DIRECTORY = "C:\\Users\\pdefr\\OneDrive\\Pulpit\\workspace\\invermo\\src\\main\\resources\\prices";
 
     private final AssetService assetsService;
     private List<AssetPrice> latestAssetPrices;
 
-    public AssetPriceServiceImpl(AssetService assetsService) {
+    public AssetPriceService(AssetService assetsService) {
         this.assetsService = assetsService;
     }
 
@@ -49,8 +48,6 @@ public class AssetPriceServiceImpl implements AssetPriceService {
         return constructAssetUpdateResult(assetPricesToInsert, assets);
     }
 
-
-    @Override
     public void updateAllAssetsPrices() {
         logger.info("Update all assets prices");
 

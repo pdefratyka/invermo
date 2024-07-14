@@ -6,9 +6,9 @@ import com.invermo.application.gui.components.views.ToastMessageType;
 import com.invermo.application.gui.portfolio.dto.SinglePortfolioAsset;
 import com.invermo.application.gui.portfolio.views.details.PositionDetailsController;
 import com.invermo.application.gui.portfolio.views.position.NewPositionController;
-import com.invermo.application.service.AssetPriceService;
-import com.invermo.application.service.PortfolioService;
 import com.invermo.application.service.ServiceManager;
+import com.invermo.application.service.impl.AssetPriceService;
+import com.invermo.application.service.impl.PortfolioService;
 import com.invermo.application.service.impl.PositionService;
 import com.invermo.business.domain.Position;
 import javafx.collections.FXCollections;
@@ -196,7 +196,8 @@ public class PortfolioViewController implements Initializable {
         PositionDetailsController positionDetailsController = loader.getController();
         positionDetailsController.setSinglePortfolioAsset(singlePortfolioAsset);
         positionDetailsController.customInitialize();
-        Scene scene = new Scene(root, 1144, 700);
+
+        Scene scene = new Scene(root, 1144, 800);
         Stage stage = new Stage();
         stage.setTitle(singlePortfolioAsset.getName() + " Details");
         stage.setScene(scene);

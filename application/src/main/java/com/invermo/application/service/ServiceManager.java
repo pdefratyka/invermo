@@ -2,13 +2,12 @@ package com.invermo.application.service;
 
 import com.invermo.application.facade.InnerApplicationFacade;
 import com.invermo.application.gui.facade.PositionDetailsFacade;
-import com.invermo.application.service.impl.AssetPriceServiceImpl;
+import com.invermo.application.service.impl.AssetPriceService;
 import com.invermo.application.service.impl.AssetService;
-import com.invermo.application.service.impl.AuthenticationServiceImpl;
-import com.invermo.application.service.impl.PortfolioServiceImpl;
+import com.invermo.application.service.impl.AuthenticationService;
+import com.invermo.application.service.impl.PortfolioService;
 import com.invermo.application.service.impl.PositionService;
 import com.invermo.application.service.impl.TransactionService;
-import com.invermo.application.service.transaction.calculator.TransactionDetailsCalculator;
 import com.invermo.business.facade.BusinessFacadeFactory;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -24,11 +23,10 @@ public class ServiceManager {
     private static TransactionService transactionService;
     private static AssetPriceService assetPriceService;
     private static PositionDetailsFacade positionDetailsFacade;
-    private static TransactionDetailsCalculator transactionDetailsCalculator;
 
     public static AuthenticationService getAuthenticationService() {
         if (authenticationService == null) {
-            authenticationService = new AuthenticationServiceImpl(getInnerApplicationFacade());
+            authenticationService = new AuthenticationService(getInnerApplicationFacade());
         }
         return authenticationService;
     }
@@ -42,7 +40,7 @@ public class ServiceManager {
 
     public static PortfolioService getPortfolioService() {
         if (portfolioService == null) {
-            portfolioService = new PortfolioServiceImpl(getAssetsService(), getPositionService(), getTransactionService());
+            portfolioService = new PortfolioService(getAssetsService(), getPositionService(), getTransactionService());
         }
         return portfolioService;
     }
@@ -63,21 +61,14 @@ public class ServiceManager {
 
     public static AssetPriceService getAssetPriceService() {
         if (assetPriceService == null) {
-            assetPriceService = new AssetPriceServiceImpl(getAssetsService());
+            assetPriceService = new AssetPriceService(getAssetsService());
         }
         return assetPriceService;
     }
 
-    public static TransactionDetailsCalculator getTransactionDetailsCalculator() {
-        if (transactionDetailsCalculator == null) {
-            transactionDetailsCalculator = new TransactionDetailsCalculator(getTransactionService(), getAssetsService(), getPositionService());
-        }
-        return transactionDetailsCalculator;
-    }
-
     public static PositionDetailsFacade getPositionDetailsFacade() {
         if (positionDetailsFacade == null) {
-            positionDetailsFacade = new PositionDetailsFacade(getTransactionDetailsCalculator());
+            positionDetailsFacade = new PositionDetailsFacade(getInnerApplicationFacade());
         }
         return positionDetailsFacade;
     }

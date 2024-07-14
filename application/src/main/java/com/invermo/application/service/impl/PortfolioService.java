@@ -1,7 +1,6 @@
 package com.invermo.application.service.impl;
 
 import com.invermo.application.gui.portfolio.dto.SinglePortfolioAsset;
-import com.invermo.application.service.PortfolioService;
 import com.invermo.application.service.transaction.calculator.NumberOfAssetCalculator;
 import com.invermo.application.service.transaction.calculator.PositionGainCalculator;
 import com.invermo.application.service.transaction.calculator.PositionValueCalculator;
@@ -22,9 +21,9 @@ import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class PortfolioServiceImpl implements PortfolioService {
+public class PortfolioService {
 
-    private static final Logger logger = Logger.getLogger(PortfolioServiceImpl.class.getName());
+    private static final Logger logger = Logger.getLogger(PortfolioService.class.getName());
 
     private final Map<String, BigDecimal> latestPrices = new HashMap<>();
 
@@ -32,13 +31,12 @@ public class PortfolioServiceImpl implements PortfolioService {
     private final PositionService positionService;
     private final TransactionService transactionService;
 
-    public PortfolioServiceImpl(AssetService assetsService, PositionService positionService, TransactionService transactionService) {
+    public PortfolioService(AssetService assetsService, PositionService positionService, TransactionService transactionService) {
         this.assetsService = assetsService;
         this.positionService = positionService;
         this.transactionService = transactionService;
     }
 
-    @Override
     public List<SinglePortfolioAsset> getPortfolioAssets() {
         initializeLatestPrices();
         final List<PositionWithAsset> positionWithAssets = positionService.getPositionsWithAssetsForUser();

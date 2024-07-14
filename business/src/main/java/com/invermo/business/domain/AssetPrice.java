@@ -12,8 +12,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Getter
-public class AssetPrice {
+public class AssetPrice implements Comparable {
     private Long assetId;
     private LocalDateTime dateTime;
     private BigDecimal price;
+
+    @Override
+    public int compareTo(Object o) {
+        if (o instanceof AssetPrice assetPrice) {
+            if (assetPrice.getDateTime().isBefore(dateTime)) {
+                return -1;
+            }
+            return 1;
+        }
+        return 0;
+    }
 }

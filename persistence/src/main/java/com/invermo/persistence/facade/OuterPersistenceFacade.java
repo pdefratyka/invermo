@@ -75,6 +75,10 @@ public class OuterPersistenceFacade {
         return positionRepository.getAllPositionsByUserId(userId);
     }
 
+    public PositionWithAssetEntity getPositionWithAssetByPositionId(final Long positionId) {
+        return positionRepository.getPositionWithAssetByPositionId(positionId);
+    }
+
     public List<PositionWithAssetEntity> getPositionsWithAssetsForUser(Long userId) {
         return positionRepository.getPositionsWithAssetsForUser(userId);
     }

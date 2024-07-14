@@ -16,6 +16,10 @@ public class PositionPersistenceService {
         return innerBusinessFacade.getAllPositionsByUserId(userId);
     }
 
+    public PositionWithAsset getPositionWithAssetByPositionId(final Long positionId) {
+        return innerBusinessFacade.getPositionWithAssetByPositionId(positionId);
+    }
+
     public void addNewPosition(final Position position) {
         innerBusinessFacade.savePosition(position);
     }

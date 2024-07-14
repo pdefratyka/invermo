@@ -1,15 +1,18 @@
 package com.invermo.application.gui.portfolio.views.details;
 
+import com.invermo.application.gui.components.views.charts.line.InvermoBarChart;
+import com.invermo.application.gui.components.views.charts.model.ChartPoint;
 import com.invermo.application.gui.facade.PositionDetailsFacade;
 import com.invermo.application.gui.portfolio.dto.SinglePortfolioAsset;
 import com.invermo.application.gui.portfolio.dto.SingleTransaction;
-import com.invermo.application.gui.portfolio.dto.SingleTransactionRecord;
 import com.invermo.application.service.ServiceManager;
+import com.invermo.business.domain.SingleTransactionRecord;
 import com.invermo.business.enumeration.TransactionType;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Side;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -24,7 +27,12 @@ public class PositionDetailsController implements Initializable {
 
     @FXML
     private TableView<SingleTransaction> transactionsTable;
-
+    @FXML
+    private InvermoBarChart gainChart;
+    @FXML
+    private InvermoBarChart cumulativeGainChart;
+    @FXML
+    private InvermoBarChart percentageGainChart;
     private SinglePortfolioAsset singlePortfolioAsset;
     private PositionDetailsFacade positionDetailsFacade;
 
@@ -37,11 +45,36 @@ public class PositionDetailsController implements Initializable {
         this.positionDetailsFacade = ServiceManager.getPositionDetailsFacade();
         configureColumns();
         final List<SingleTransactionRecord> transactions = this.positionDetailsFacade.getSingleTransactionsForPosition(singlePortfolioAsset.getPositionId());
+
         final List<SingleTransaction> singleTransactions = mapToSingleTransactions(transactions);
         final ObservableList<SingleTransaction> singleTransactionObservableList = FXCollections.observableArrayList();
         singleTransactionObservableList.addAll(singleTransactions);
         transactionsTable.setItems(singleTransactionObservableList);
+        List<ChartPoint> chartPoints = positionDetailsFacade.getGainByMonths(singlePortfolioAsset.getPositionId());
+        List<ChartPoint> cumulativeGainPoints = positionDetailsFacade.getCumulativeGainByMonths(singlePortfolioAsset.getPositionId());
+        List<ChartPoint> percentageGainByMonth = positionDetailsFacade.getPercentageGainByMonth(singlePortfolioAsset.getPositionId());
 
+        gainChart.setChartData(chartPoints);
+        gainChart.setTitleSide(Side.TOP);
+        gainChart.setTitle("Gain");
+        gainChart.getXAxis().setLabel("Date");
+
+        cumulativeGainChart.setChartData(cumulativeGainPoints);
+        cumulativeGainChart.setTitleSide(Side.TOP);
+        cumulativeGainChart.setTitle("Cumulative Gain");
+        cumulativeGainChart.getXAxis().setLabel("Date");
+
+        percentageGainChart.setPercentageType("PERCENTAGE_TYPE");
+        percentageGainChart.setChartData(percentageGainByMonth);
+        percentageGainChart.setTitleSide(Side.TOP);
+        percentageGainChart.setTitle("Percentage Gain");
+        percentageGainChart.getXAxis().setLabel("Date");
+
+
+
+
+
+//        mainPane.getChildren().add(new CustomLineChart());
     }
 
     public void setSinglePortfolioAsset(SinglePortfolioAsset singlePortfolioAsset) {

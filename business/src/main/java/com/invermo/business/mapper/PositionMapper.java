@@ -24,30 +24,38 @@ public final class PositionMapper {
                 .build();
     }
 
+    public static Position mapPositionEntityToPosition(final PositionEntity positionEntity) {
+        return new Position(positionEntity.getId(),
+                positionEntity.getUserId(),
+                positionEntity.getAssetId(),
+                com.invermo.business.enumeration.PositionType.valueOf(positionEntity.getPositionType().name()));
+    }
+
     public static List<Position> mapPositionEntitiesToPositions(final List<PositionEntity> positionEntities) {
         final List<Position> positions = new ArrayList<>();
         for (PositionEntity positionEntity : positionEntities) {
-            Position position = new Position(positionEntity.getId(),
-                    positionEntity.getUserId(),
-                    positionEntity.getAssetId(),
-                    com.invermo.business.enumeration.PositionType.valueOf(positionEntity.getPositionType().name()));
+            Position position = mapPositionEntityToPosition(positionEntity);
             positions.add(position);
         }
         return positions;
     }
 
+    public static PositionWithAsset mapPositionWithAssetEntityToPositionWithAsset(final PositionWithAssetEntity positionWithAssetEntity) {
+        return PositionWithAsset.builder()
+                .positionId(positionWithAssetEntity.getPositionId())
+                .assetId(positionWithAssetEntity.getAssetId())
+                .assetName(positionWithAssetEntity.getAssetName())
+                .assetSymbol(positionWithAssetEntity.getAssetSymbol())
+                .assetType(AssetType.fromName(positionWithAssetEntity.getAssetType().getName()))
+                .positionType(com.invermo.business.enumeration.PositionType.valueOf(positionWithAssetEntity.getPositionType().name()))
+                .currency(Currency.valueOf(positionWithAssetEntity.getCurrency().name()))
+                .build();
+    }
+
     public static List<PositionWithAsset> mapPositionWithAssetEntitiesToPositionsWithAssets(final List<PositionWithAssetEntity> positionWithAssets) {
         final List<PositionWithAsset> positions = new ArrayList<>();
         for (PositionWithAssetEntity positionWithAsset : positionWithAssets) {
-            PositionWithAsset position=PositionWithAsset.builder()
-                    .positionId(positionWithAsset.getPositionId())
-                    .assetId(positionWithAsset.getAssetId())
-                    .assetName(positionWithAsset.getAssetName())
-                    .assetSymbol(positionWithAsset.getAssetSymbol())
-                    .assetType(AssetType.fromName(positionWithAsset.getAssetType().getName()))
-                    .positionType( com.invermo.business.enumeration.PositionType.valueOf(positionWithAsset.getPositionType().name()))
-                    .currency(Currency.valueOf(positionWithAsset.getCurrency().name()))
-                    .build();
+            PositionWithAsset position = mapPositionWithAssetEntityToPositionWithAsset(positionWithAsset);
             positions.add(position);
         }
         return positions;

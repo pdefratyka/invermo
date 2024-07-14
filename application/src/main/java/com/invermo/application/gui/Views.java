@@ -11,6 +11,7 @@ public final class Views {
     public static final String NEW_TRANSACTION_VIEW_RESOURCE = "/com/invermo/application/gui/portfolio/views/transaction/new-transaction-view.fxml";
     public static final String POSITION_DETAILS_VIEW_RESOURCE = "/com/invermo/application/gui/portfolio/views/details/position-details-view.fxml";
     public static final String TOAST_MESSAGE = "/com/invermo/application/gui/components/views/toast-message-view.fxml";
+    public static final String GAIN_CHART = "/com/invermo/application/gui/components/views/charts/line/line-chart-view.fxml";
 
     private Views() {
     }

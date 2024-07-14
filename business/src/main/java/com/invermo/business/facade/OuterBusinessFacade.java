@@ -3,12 +3,16 @@ package com.invermo.business.facade;
 import com.invermo.business.domain.Asset;
 import com.invermo.business.domain.AssetPrice;
 import com.invermo.business.domain.Position;
+import com.invermo.business.domain.PositionGain;
 import com.invermo.business.domain.PositionWithAsset;
+import com.invermo.business.domain.SingleTransactionRecord;
 import com.invermo.business.domain.Transaction;
 import com.invermo.business.domain.User;
 import com.invermo.business.service.AssetService;
 import com.invermo.business.service.AuthenticationService;
+import com.invermo.business.service.PositionGainService;
 import com.invermo.business.service.PositionService;
+import com.invermo.business.service.TransactionDetailsCalculator;
 import com.invermo.business.service.TransactionService;
 import lombok.AllArgsConstructor;
 
@@ -23,6 +27,8 @@ public class OuterBusinessFacade {
     private final AssetService assetService;
     private final PositionService positionService;
     private final TransactionService transactionService;
+    private final TransactionDetailsCalculator transactionDetailsCalculator;
+    private final PositionGainService positionGainService;
 
     public Optional<User> login(final String login, final String password) {
         System.out.println("test from business facade");
@@ -91,5 +97,13 @@ public class OuterBusinessFacade {
 
     public List<Transaction> getAllTransactionForPosition(Long positionId) {
         return transactionService.getAllTransactionsForPositions(List.of(positionId));
+    }
+
+    public List<SingleTransactionRecord> getSingleTransactionsForPosition(Long positionId, Long userId) {
+        return transactionDetailsCalculator.getSingleTransactionsForPosition(positionId, userId);
+    }
+
+    public PositionGain getPositionGain(Long positionId, Long userId){
+        return positionGainService.getMonthlyPositionGain(positionId);
     }
 }

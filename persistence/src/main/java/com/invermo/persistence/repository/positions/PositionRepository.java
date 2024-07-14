@@ -8,6 +8,7 @@ import com.invermo.persistence.enumeration.Currency;
 import com.invermo.persistence.enumeration.PositionType;
 import com.invermo.persistence.repository.AbstractRepository;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,6 +19,11 @@ public class PositionRepository extends AbstractRepository {
     public void savePosition(final PositionEntity position) {
         final String query = prepareAddNewPositionQuery(position);
         execute(query);
+    }
+
+    public PositionWithAssetEntity getPositionWithAssetByPositionId(Long positionId) {
+        final String query = prepareGetPositionWithAssetByPositionIdQuery(positionId);
+        return executeQuery(query, this::extractPositionWithAssetEntityFromResultSet);
     }
 
     public List<PositionEntity> getAllPositionsByUserId(Long userId) {
@@ -38,6 +44,17 @@ public class PositionRepository extends AbstractRepository {
                 positions.add(position);
             }
             return positions;
+        } catch (SQLException ex) {
+            throw new RuntimeException("Error during processing ResultSet", ex);
+        }
+    }
+
+    private PositionWithAssetEntity extractPositionWithAssetEntityFromResultSet(final ResultSet resultSet) {
+        try {
+            if (resultSet.next()) {
+                return buildPositionWithAsset(resultSet);
+            }
+            return null;
         } catch (SQLException ex) {
             throw new RuntimeException("Error during processing ResultSet", ex);
         }
@@ -85,6 +102,10 @@ public class PositionRepository extends AbstractRepository {
 
     private String prepareGetPositionsByUserIdQuery(final Long userId) {
         return PositionsDatabaseQueries.getAllPositionsForUser(userId);
+    }
+
+    private String prepareGetPositionWithAssetByPositionIdQuery(final Long positionId) {
+        return PositionsDatabaseQueries.getPositionWithAssetByPositionId(positionId);
     }
 
     private String prepareAddNewPositionQuery(final PositionEntity position) {
