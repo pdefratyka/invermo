@@ -11,7 +11,6 @@ import com.invermo.business.mapper.AssetPriceMapper;
 import com.invermo.business.mapper.PositionMapper;
 import com.invermo.business.mapper.TransactionMapper;
 import com.invermo.business.mapper.UserMapper;
-import com.invermo.persistence.entity.PositionEntity;
 import com.invermo.persistence.facade.OuterPersistenceFacade;
 import com.invermo.persistence.facade.PersistenceFacadeFactory;
 
@@ -83,7 +82,7 @@ public class InnerBusinessFacade {
         return PositionMapper.mapPositionEntitiesToPositions(outerPersistenceFacade.getAllPositionsByUserId(userId));
     }
 
-    public PositionWithAsset getPositionWithAssetByPositionId(final Long positionId){
+    public PositionWithAsset getPositionWithAssetByPositionId(final Long positionId) {
         return PositionMapper.mapPositionWithAssetEntityToPositionWithAsset(outerPersistenceFacade.getPositionWithAssetByPositionId(positionId));
     }
 
