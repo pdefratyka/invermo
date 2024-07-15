@@ -6,26 +6,31 @@ import com.invermo.application.state.ApplicationState;
 import com.invermo.business.domain.PositionGain;
 import lombok.AllArgsConstructor;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @AllArgsConstructor
 public class StatisticsService {
+    public static final String GAIN = "GAIN";
+    public static final String CUMULATIVE_GAIN = "CUMULATIVE_GAIN";
     private final InnerApplicationFacade innerApplicationFacade;
 
-    public List<ChartPoint> getGainByMonths() {
+    public Map<String, List<ChartPoint>> getGainByMonths() {
+        final Map<String, List<ChartPoint>> gains = new HashMap<>();
         final PositionGain positionGain = innerApplicationFacade.getPositionsGainByUserId(ApplicationState.getUser().id());
-        return positionGain.getGainByMonth().entrySet()
+        final List<ChartPoint> gainList = positionGain.getGainByMonth().entrySet()
                 .stream()
                 .map(entry -> new ChartPoint(entry.getKey().toString(), entry.getValue()))
-                .collect(Collectors.toList());
-    }
+                .toList();
+        final List<ChartPoint> cumulativeGainList = positionGain.getCumulativeGainByMonth().entrySet()
+                .stream()
+                .map(entry -> new ChartPoint(entry.getKey().toString(), entry.getValue()))
+                .toList();
 
-    public List<ChartPoint> getCumulativeGainByMonths() {
-        final PositionGain positionGain = innerApplicationFacade.getPositionsGainByUserId(ApplicationState.getUser().id());
-        return positionGain.getCumulativeGainByMonth().entrySet()
-                .stream()
-                .map(entry -> new ChartPoint(entry.getKey().toString(), entry.getValue()))
-                .collect(Collectors.toList());
+        gains.put(GAIN, gainList);
+        gains.put(CUMULATIVE_GAIN, cumulativeGainList);
+
+        return gains;
     }
 }

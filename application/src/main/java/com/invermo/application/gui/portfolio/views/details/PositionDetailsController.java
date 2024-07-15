@@ -21,6 +21,7 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class PositionDetailsController implements Initializable {
@@ -50,9 +51,10 @@ public class PositionDetailsController implements Initializable {
         final ObservableList<SingleTransaction> singleTransactionObservableList = FXCollections.observableArrayList();
         singleTransactionObservableList.addAll(singleTransactions);
         transactionsTable.setItems(singleTransactionObservableList);
-        List<ChartPoint> chartPoints = positionDetailsFacade.getGainByMonths(singlePortfolioAsset.getPositionId());
-        List<ChartPoint> cumulativeGainPoints = positionDetailsFacade.getCumulativeGainByMonths(singlePortfolioAsset.getPositionId());
-        List<ChartPoint> percentageGainByMonth = positionDetailsFacade.getPercentageGainByMonth(singlePortfolioAsset.getPositionId());
+        final Map<String, List<ChartPoint>> gains = positionDetailsFacade.getPositionGainByMonths(singlePortfolioAsset.getPositionId());
+        List<ChartPoint> chartPoints = gains.get(PositionDetailsFacade.GAIN);
+        List<ChartPoint> cumulativeGainPoints = gains.get(PositionDetailsFacade.CUMULATIVE_GAIN);
+        List<ChartPoint> percentageGainByMonth = gains.get(PositionDetailsFacade.PERCENTAGE_GAIN);
 
         gainChart.setChartData(chartPoints);
         gainChart.setTitleSide(Side.TOP);
@@ -69,9 +71,6 @@ public class PositionDetailsController implements Initializable {
         percentageGainChart.setTitleSide(Side.TOP);
         percentageGainChart.setTitle("Percentage Gain");
         percentageGainChart.getXAxis().setLabel("Date");
-
-
-
 
 
 //        mainPane.getChildren().add(new CustomLineChart());

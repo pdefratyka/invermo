@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.VBox?>
 <?import com.invermo.application.gui.components.views.charts.line.InvermoBarChart?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <Pane prefHeight="780.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.invermo.application.gui.statistics.view.StatisticsViewController">
     <ScrollPane layoutX="14.0" layoutY="10.0" prefHeight="700.0" prefWidth="1117.0">
@@ -11,7 +11,6 @@
             <VBox>
                 <InvermoBarChart fx:id="cumulativeGainChart" prefHeight="320.0" prefWidth="1050.0"/>
                 <InvermoBarChart fx:id="gainChart" prefHeight="320.0" prefWidth="1050.0"/>
-                <InvermoBarChart fx:id="percentageGainChart" prefHeight="320.0" prefWidth="1050.0"/>
             </VBox>
         </content>
     </ScrollPane>

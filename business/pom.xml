@@ -6,7 +6,7 @@
     <parent>
         <groupId>com</groupId>
         <artifactId>invermo</artifactId>
-        <version>0.1.8</version>
+        <version>${revision}</version>
     </parent>
 
     <groupId>com.invermo</groupId>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>com.invermo</groupId>
             <artifactId>persistence</artifactId>
-            <version>0.1.8</version>
+            <version>${revision}</version>
         </dependency>
     </dependencies>
 

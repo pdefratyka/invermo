@@ -6,7 +6,7 @@
 
     <groupId>com</groupId>
     <artifactId>invermo</artifactId>
-    <version>0.1.8</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
     <name>invermo</name>
     <modules>
@@ -16,6 +16,7 @@
     </modules>
 
     <properties>
+        <revision>0.1.9</revision>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <postgres-version>42.7.1</postgres-version>
         <javafx.version>17.0.6</javafx.version>

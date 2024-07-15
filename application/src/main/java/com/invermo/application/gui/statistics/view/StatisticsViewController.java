@@ -10,6 +10,7 @@ import javafx.geometry.Side;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class StatisticsViewController implements Initializable {
@@ -23,14 +24,16 @@ public class StatisticsViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.statisticsService = ServiceManager.getStatisticsService();
-        List<ChartPoint> chartPoints = statisticsService.getGainByMonths();
+        final Map<String, List<ChartPoint>> gains = statisticsService.getGainByMonths();
+
+        List<ChartPoint> chartPoints = gains.get(StatisticsService.GAIN);
 
         gainChart.setChartData(chartPoints);
         gainChart.setTitleSide(Side.TOP);
         gainChart.setTitle("Gain");
         gainChart.getXAxis().setLabel("Date");
 
-        List<ChartPoint> cumulativeGainChartPoints = statisticsService.getCumulativeGainByMonths();
+        List<ChartPoint> cumulativeGainChartPoints = gains.get(StatisticsService.CUMULATIVE_GAIN);
 
         cumulativeGainChart.setChartData(cumulativeGainChartPoints);
         cumulativeGainChart.setTitleSide(Side.TOP);

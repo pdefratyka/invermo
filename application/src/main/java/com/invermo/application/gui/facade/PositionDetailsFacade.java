@@ -7,11 +7,16 @@ import com.invermo.business.domain.PositionGain;
 import com.invermo.business.domain.SingleTransactionRecord;
 import lombok.AllArgsConstructor;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @AllArgsConstructor
 public class PositionDetailsFacade {
+
+    public static final String GAIN = "GAIN";
+    public static final String CUMULATIVE_GAIN = "CUMULATIVE_GAIN";
+    public static final String PERCENTAGE_GAIN = "PERCENTAGE_GAIN";
 
     private final InnerApplicationFacade innerApplicationFacade;
 
@@ -19,27 +24,27 @@ public class PositionDetailsFacade {
         return innerApplicationFacade.getSingleTransactionsForPosition(positionId, ApplicationState.getUser().id());
     }
 
-    public List<ChartPoint> getGainByMonths(final Long positionId) {
+    public Map<String, List<ChartPoint>> getPositionGainByMonths(final Long positionId) {
         final PositionGain positionGain = innerApplicationFacade.getPositionGain(positionId, ApplicationState.getUser().id());
-        return positionGain.getGainByMonth().entrySet()
-                .stream()
-                .map(entry -> new ChartPoint(entry.getKey().toString(), entry.getValue()))
-                .collect(Collectors.toList());
-    }
 
-    public List<ChartPoint> getCumulativeGainByMonths(final Long positionId) {
-        final PositionGain positionGain = innerApplicationFacade.getPositionGain(positionId, ApplicationState.getUser().id());
-        return positionGain.getCumulativeGainByMonth().entrySet()
+        final List<ChartPoint> gainList = positionGain.getGainByMonth().entrySet()
                 .stream()
                 .map(entry -> new ChartPoint(entry.getKey().toString(), entry.getValue()))
-                .collect(Collectors.toList());
-    }
+                .toList();
+        final List<ChartPoint> cumulativeGainList = positionGain.getCumulativeGainByMonth().entrySet()
+                .stream()
+                .map(entry -> new ChartPoint(entry.getKey().toString(), entry.getValue()))
+                .toList();
+        final List<ChartPoint> percentageGainList = positionGain.getPercentageGainByMonth().entrySet()
+                .stream()
+                .map(entry -> new ChartPoint(entry.getKey().toString(), entry.getValue()))
+                .toList();
 
-    public List<ChartPoint> getPercentageGainByMonth(final Long positionId) {
-        final PositionGain positionGain = innerApplicationFacade.getPositionGain(positionId, ApplicationState.getUser().id());
-        return positionGain.getPercentageGainByMonth().entrySet()
-                .stream()
-                .map(entry -> new ChartPoint(entry.getKey().toString(), entry.getValue()))
-                .collect(Collectors.toList());
+        final Map<String, List<ChartPoint>> gainMap = new HashMap<>();
+        gainMap.put(GAIN, gainList);
+        gainMap.put(CUMULATIVE_GAIN, cumulativeGainList);
+        gainMap.put(PERCENTAGE_GAIN, percentageGainList);
+
+        return gainMap;
     }
 }
