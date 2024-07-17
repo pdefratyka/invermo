@@ -5,11 +5,14 @@ import com.invermo.business.domain.AssetPrice;
 import com.invermo.business.domain.Position;
 import com.invermo.business.domain.PositionGain;
 import com.invermo.business.domain.PositionWithAsset;
+import com.invermo.business.domain.SinglePortfolioAsset;
 import com.invermo.business.domain.SingleTransactionRecord;
 import com.invermo.business.domain.Transaction;
 import com.invermo.business.domain.User;
+import com.invermo.business.service.AssetPriceService;
 import com.invermo.business.service.AssetService;
 import com.invermo.business.service.AuthenticationService;
+import com.invermo.business.service.PortfolioService;
 import com.invermo.business.service.PositionGainService;
 import com.invermo.business.service.PositionService;
 import com.invermo.business.service.TransactionDetailsCalculator;
@@ -18,6 +21,7 @@ import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -29,6 +33,8 @@ public class OuterBusinessFacade {
     private final TransactionService transactionService;
     private final TransactionDetailsCalculator transactionDetailsCalculator;
     private final PositionGainService positionGainService;
+    private final PortfolioService portfolioService;
+    private final AssetPriceService assetPriceService;
 
     public Optional<User> login(final String login, final String password) {
         System.out.println("test from business facade");
@@ -103,11 +109,19 @@ public class OuterBusinessFacade {
         return transactionDetailsCalculator.getSingleTransactionsForPosition(positionId, userId);
     }
 
-    public PositionGain getPositionGain(Long positionId, Long userId){
+    public PositionGain getPositionGain(Long positionId, Long userId) {
         return positionGainService.getMonthlyPositionGain(positionId);
     }
 
-    public PositionGain getPositionsGainByUserId(Long userId){
+    public PositionGain getPositionsGainByUserId(Long userId) {
         return positionGainService.getMonthlyPositionGainByUserId(userId);
+    }
+
+    public List<SinglePortfolioAsset> getPortfolioAssets(Long userId) {
+        return portfolioService.getPortfolioAssets(userId);
+    }
+
+    public Map<String, Long> updateAllAssetsPricesFromOneFile(String fileName) {
+        return assetPriceService.updateAllAssetsPricesFromOneFile(fileName);
     }
 }

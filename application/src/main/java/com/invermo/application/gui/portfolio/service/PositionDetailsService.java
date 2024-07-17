@@ -1,4 +1,4 @@
-package com.invermo.application.gui.facade;
+package com.invermo.application.gui.portfolio.service;
 
 import com.invermo.application.facade.InnerApplicationFacade;
 import com.invermo.application.gui.components.views.charts.model.ChartPoint;
@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor
-public class PositionDetailsFacade {
+public class PositionDetailsService {
 
     public static final String GAIN = "GAIN";
     public static final String CUMULATIVE_GAIN = "CUMULATIVE_GAIN";

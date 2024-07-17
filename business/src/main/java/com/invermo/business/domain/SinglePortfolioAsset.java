@@ -1,4 +1,4 @@
-package com.invermo.application.gui.portfolio.dto;
+package com.invermo.business.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

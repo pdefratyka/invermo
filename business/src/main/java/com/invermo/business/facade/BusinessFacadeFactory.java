@@ -10,6 +10,8 @@ public class BusinessFacadeFactory {
                 ServiceManager.getPositionService(),
                 ServiceManager.getTransactionService(),
                 ServiceManager.getTransactionDetailsCalculator(),
-                ServiceManager.getPositionGainService());
+                ServiceManager.getPositionGainService(),
+                ServiceManager.getPortfolioService(),
+                ServiceManager.getAssetPriceService());
     }
 }

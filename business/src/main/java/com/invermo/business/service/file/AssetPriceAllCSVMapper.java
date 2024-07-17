@@ -1,4 +1,4 @@
-package com.invermo.application.service.files;
+package com.invermo.business.service.file;
 
 import com.invermo.business.domain.AssetPrice;
 import lombok.AccessLevel;

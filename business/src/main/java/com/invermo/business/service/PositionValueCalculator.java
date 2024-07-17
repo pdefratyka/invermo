@@ -1,4 +1,4 @@
-package com.invermo.application.service.transaction.calculator;
+package com.invermo.business.service;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

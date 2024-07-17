@@ -14,12 +14,4 @@ public class TransactionService {
     public void saveTransaction(final Transaction transaction) {
         innerApplicationFacade.saveTransaction(transaction);
     }
-
-    public List<Transaction> getAllTransactionsForPositions(List<Long> positionIds) {
-        return innerApplicationFacade.getAllTransactionsForPositions(positionIds);
-    }
-
-    public List<Transaction> getAllTransactionForPosition(Long positionId) {
-        return getAllTransactionsForPositions(List.of(positionId));
-    }
 }

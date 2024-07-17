@@ -1,7 +1,7 @@
 package com.invermo.application.service;
 
 import com.invermo.application.facade.InnerApplicationFacade;
-import com.invermo.application.gui.facade.PositionDetailsFacade;
+import com.invermo.application.gui.portfolio.service.PositionDetailsService;
 import com.invermo.application.gui.statistics.service.StatisticsService;
 import com.invermo.application.service.impl.AssetPriceService;
 import com.invermo.application.service.impl.AssetService;
@@ -23,7 +23,7 @@ public class ServiceManager {
     private static PositionService positionService;
     private static TransactionService transactionService;
     private static AssetPriceService assetPriceService;
-    private static PositionDetailsFacade positionDetailsFacade;
+    private static PositionDetailsService positionDetailsService;
     private static StatisticsService statisticsService;
 
     public static AuthenticationService getAuthenticationService() {
@@ -42,7 +42,7 @@ public class ServiceManager {
 
     public static PortfolioService getPortfolioService() {
         if (portfolioService == null) {
-            portfolioService = new PortfolioService(getAssetsService(), getPositionService(), getTransactionService());
+            portfolioService = new PortfolioService(getInnerApplicationFacade());
         }
         return portfolioService;
     }
@@ -63,16 +63,16 @@ public class ServiceManager {
 
     public static AssetPriceService getAssetPriceService() {
         if (assetPriceService == null) {
-            assetPriceService = new AssetPriceService(getAssetsService());
+            assetPriceService = new AssetPriceService(getInnerApplicationFacade());
         }
         return assetPriceService;
     }
 
-    public static PositionDetailsFacade getPositionDetailsFacade() {
-        if (positionDetailsFacade == null) {
-            positionDetailsFacade = new PositionDetailsFacade(getInnerApplicationFacade());
+    public static PositionDetailsService getPositionDetailsService() {
+        if (positionDetailsService == null) {
+            positionDetailsService = new PositionDetailsService(getInnerApplicationFacade());
         }
-        return positionDetailsFacade;
+        return positionDetailsService;
     }
 
     public static InnerApplicationFacade getInnerApplicationFacade() {

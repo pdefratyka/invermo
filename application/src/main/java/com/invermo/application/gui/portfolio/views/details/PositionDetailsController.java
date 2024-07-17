@@ -2,10 +2,10 @@ package com.invermo.application.gui.portfolio.views.details;
 
 import com.invermo.application.gui.components.views.charts.line.InvermoBarChart;
 import com.invermo.application.gui.components.views.charts.model.ChartPoint;
-import com.invermo.application.gui.facade.PositionDetailsFacade;
-import com.invermo.application.gui.portfolio.dto.SinglePortfolioAsset;
 import com.invermo.application.gui.portfolio.dto.SingleTransaction;
+import com.invermo.application.gui.portfolio.service.PositionDetailsService;
 import com.invermo.application.service.ServiceManager;
+import com.invermo.business.domain.SinglePortfolioAsset;
 import com.invermo.business.domain.SingleTransactionRecord;
 import com.invermo.business.enumeration.TransactionType;
 import javafx.collections.FXCollections;
@@ -35,7 +35,7 @@ public class PositionDetailsController implements Initializable {
     @FXML
     private InvermoBarChart percentageGainChart;
     private SinglePortfolioAsset singlePortfolioAsset;
-    private PositionDetailsFacade positionDetailsFacade;
+    private PositionDetailsService positionDetailsService;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -43,18 +43,18 @@ public class PositionDetailsController implements Initializable {
     }
 
     public void customInitialize() {
-        this.positionDetailsFacade = ServiceManager.getPositionDetailsFacade();
+        this.positionDetailsService = ServiceManager.getPositionDetailsService();
         configureColumns();
-        final List<SingleTransactionRecord> transactions = this.positionDetailsFacade.getSingleTransactionsForPosition(singlePortfolioAsset.getPositionId());
+        final List<SingleTransactionRecord> transactions = this.positionDetailsService.getSingleTransactionsForPosition(singlePortfolioAsset.getPositionId());
 
         final List<SingleTransaction> singleTransactions = mapToSingleTransactions(transactions);
         final ObservableList<SingleTransaction> singleTransactionObservableList = FXCollections.observableArrayList();
         singleTransactionObservableList.addAll(singleTransactions);
         transactionsTable.setItems(singleTransactionObservableList);
-        final Map<String, List<ChartPoint>> gains = positionDetailsFacade.getPositionGainByMonths(singlePortfolioAsset.getPositionId());
-        List<ChartPoint> chartPoints = gains.get(PositionDetailsFacade.GAIN);
-        List<ChartPoint> cumulativeGainPoints = gains.get(PositionDetailsFacade.CUMULATIVE_GAIN);
-        List<ChartPoint> percentageGainByMonth = gains.get(PositionDetailsFacade.PERCENTAGE_GAIN);
+        final Map<String, List<ChartPoint>> gains = positionDetailsService.getPositionGainByMonths(singlePortfolioAsset.getPositionId());
+        List<ChartPoint> chartPoints = gains.get(PositionDetailsService.GAIN);
+        List<ChartPoint> cumulativeGainPoints = gains.get(PositionDetailsService.CUMULATIVE_GAIN);
+        List<ChartPoint> percentageGainByMonth = gains.get(PositionDetailsService.PERCENTAGE_GAIN);
 
         gainChart.setChartData(chartPoints);
         gainChart.setTitleSide(Side.TOP);

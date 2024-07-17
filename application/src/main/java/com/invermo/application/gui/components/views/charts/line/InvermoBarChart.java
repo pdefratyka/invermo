@@ -17,7 +17,6 @@ import java.util.List;
 
 public class InvermoBarChart extends BarChart<String, Number> {
 
-    private List<ChartPoint> points;
     private String percentageType;
 
     public InvermoBarChart() {
@@ -56,9 +55,9 @@ public class InvermoBarChart extends BarChart<String, Number> {
                 Tooltip tooltip = new Tooltip(tooltipData);
                 Tooltip.install(node, tooltip);
 
-                if(data.getYValue().doubleValue()<0){
+                if (data.getYValue().doubleValue() < 0) {
                     node.setStyle("-fx-bar-fill: red;");
-                }else{
+                } else {
                     node.setStyle("-fx-bar-fill: green;");
                 }
 
@@ -68,9 +67,9 @@ public class InvermoBarChart extends BarChart<String, Number> {
                     tooltip.show(node, event.getScreenX(), event.getScreenY() + 10);
                 });
                 node.setOnMouseExited(event -> {
-                    if(data.getYValue().doubleValue()<0){
+                    if (data.getYValue().doubleValue() < 0) {
                         node.setStyle("-fx-bar-fill: red;");
-                    }else{
+                    } else {
                         node.setStyle("-fx-bar-fill: green;");
                     }
                     tooltip.hide();
