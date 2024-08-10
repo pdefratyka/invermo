@@ -22,15 +22,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -130,20 +129,15 @@ public class PortfolioViewController implements Initializable {
     }
 
     @FXML
-    private void onRefreshPricesAction() throws IOException {
-        final FileChooser fileChooser = new FileChooser();
-        final File file = fileChooser.showOpenDialog(null);
-        if (file != null) {
-            try {
-                final Map<String, Long> result = assetPriceService.updateAllAssetsPricesFromOneFile(file.getAbsolutePath());
-                final String resultMessage = constructUpdatePricesResultText(result);
-                displayToastMessage(ToastMessageType.SUCCESS, "You successfully updated prices: " + resultMessage);
-            } catch (Exception ex) {
-                displayToastMessage(ToastMessageType.FAILURE, "There was a problem on updating prices");
-                throw ex;
-            }
+    private void onRefreshPricesAction() throws IOException, GeneralSecurityException {
+        try {
+            final Map<String, Long> result = assetPriceService.updateAllAssetsPricesFromOneFile();
+            final String resultMessage = constructUpdatePricesResultText(result);
+            displayToastMessage(ToastMessageType.SUCCESS, "You successfully updated prices: " + resultMessage);
+        } catch (Exception ex) {
+            displayToastMessage(ToastMessageType.FAILURE, "There was a problem on updating prices");
+            throw ex;
         }
-
     }
 
     private String constructUpdatePricesResultText(final Map<String, Long> result) {

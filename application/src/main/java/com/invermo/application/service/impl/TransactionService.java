@@ -4,8 +4,6 @@ import com.invermo.application.facade.InnerApplicationFacade;
 import com.invermo.business.domain.Transaction;
 import lombok.AllArgsConstructor;
 
-import java.util.List;
-
 @AllArgsConstructor
 public class TransactionService {
 

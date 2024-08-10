@@ -19,7 +19,9 @@ import com.invermo.business.service.TransactionDetailsCalculator;
 import com.invermo.business.service.TransactionService;
 import lombok.AllArgsConstructor;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -121,7 +123,7 @@ public class OuterBusinessFacade {
         return portfolioService.getPortfolioAssets(userId);
     }
 
-    public Map<String, Long> updateAllAssetsPricesFromOneFile(String fileName) {
-        return assetPriceService.updateAllAssetsPricesFromOneFile(fileName);
+    public Map<String, Long> updateAllAssetsPricesFromOneFile() throws GeneralSecurityException, IOException {
+        return assetPriceService.updateAllAssetsPricesFromOneFile();
     }
 }

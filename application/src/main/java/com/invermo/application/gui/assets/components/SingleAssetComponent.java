@@ -99,10 +99,9 @@ public class SingleAssetComponent extends Pane {
 
     private void addButtons() {
         final double marginRight = 50;
-        final double buttonWidth = 50;
         final double contextMenuButtonWidth = 30;
         final double buttonHeight = 20;
-        final double layoutY = (PREF_HEIGHT - buttonHeight) / 2 - 2;
+        final double layoutY = (PREF_HEIGHT - buttonHeight) / 2 - 8;
 
         final Button contextMenuButton = new Button("...");
         contextMenuButton.setPrefWidth(contextMenuButtonWidth);
@@ -110,26 +109,6 @@ public class SingleAssetComponent extends Pane {
         contextMenuButton.setLayoutY(layoutY);
         contextMenuButton.setOnMouseClicked(event -> showContextMenu(contextMenuButton, event));
 
-        final BackgroundFill sellBackgroundFill = new BackgroundFill(Paint.valueOf("red"), null, null);
-        final Background sellBackground = new Background(sellBackgroundFill);
-        final Button sellButton = new Button("Sell");
-        sellButton.setBackground(sellBackground);
-        sellButton.setPrefWidth(buttonWidth);
-        sellButton.setLayoutX(contextMenuButton.getLayoutX() - sellButton.getPrefWidth() - marginRight);
-        sellButton.setLayoutY(layoutY);
-        sellButton.setOnAction(event -> onSell());
-
-        final BackgroundFill backgroundFill = new BackgroundFill(Paint.valueOf("green"), null, null);
-        final Background background = new Background(backgroundFill);
-        final Button buyButton = new Button("Buy");
-        buyButton.setBackground(background);
-        buyButton.setPrefWidth(buttonWidth);
-        buyButton.setLayoutX(sellButton.getLayoutX() - buyButton.getPrefWidth() - marginRight);
-        buyButton.setLayoutY(layoutY);
-        buyButton.setOnAction(event -> onBuy());
-
-        getChildren().add(buyButton);
-        getChildren().add(sellButton);
         getChildren().add(contextMenuButton);
     }
 
@@ -146,14 +125,6 @@ public class SingleAssetComponent extends Pane {
         final MenuItem deleteItem = new MenuItem("Delete");
         deleteItem.setOnAction(event -> onDelete());
         assetsOperationsMenu.getItems().addAll(viewItem, editItem, deleteItem);
-    }
-
-    private void onBuy() {
-        System.out.println("On buy: " + counter);
-    }
-
-    private void onSell() {
-        System.out.println("On sell: " + counter);
     }
 
     private void onView() {

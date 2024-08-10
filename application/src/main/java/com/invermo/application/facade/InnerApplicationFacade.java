@@ -12,6 +12,8 @@ import com.invermo.business.domain.User;
 import com.invermo.business.facade.OuterBusinessFacade;
 import lombok.AllArgsConstructor;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -82,7 +84,7 @@ public class InnerApplicationFacade {
         return outerBusinessFacade.getPortfolioAssets(userId);
     }
 
-    public Map<String, Long> updateAllAssetsPricesFromOneFile(String fileName) {
-        return outerBusinessFacade.updateAllAssetsPricesFromOneFile(fileName);
+    public Map<String, Long> updateAllAssetsPricesFromOneFile() throws GeneralSecurityException, IOException {
+        return outerBusinessFacade.updateAllAssetsPricesFromOneFile();
     }
 }

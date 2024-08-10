@@ -31,6 +31,7 @@ public class DashboardViewController implements Initializable {
 //        this.userName.setText(ApplicationState.getUser().userName());
 //        ApplicationState.setUser(new User(1L, "hoo982", "qwe"));
         this.userName.setText("hoo");
+        loadPortfolioView();
     }
 
     @FXML
