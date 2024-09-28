@@ -54,6 +54,11 @@ public class DashboardViewController implements Initializable {
         loadContent(Views.STATISTICS_VIEW_RESOURCE);
     }
 
+    @FXML
+    private void loadCompositionView() {
+        loadContent(Views.COMPOSITION_VIEW_RESOURCE);
+    }
+
     private void loadContent(String fxmlPath) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));

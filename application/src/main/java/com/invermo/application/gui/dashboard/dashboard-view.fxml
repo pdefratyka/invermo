@@ -32,6 +32,12 @@
                 <Font size="16.0"/>
             </font>
         </Button>
+        <Button layoutX="6.0" layoutY="190.0" mnemonicParsing="false" onAction="#loadCompositionView"
+                prefHeight="30.0" prefWidth="96.0" text="Composition">
+            <font>
+                <Font size="16.0"/>
+            </font>
+        </Button>
     </AnchorPane>
     <AnchorPane fx:id="mainContent" layoutX="115.0" layoutY="40.0" prefHeight="735.0" prefWidth="1156.0">
     </AnchorPane>

@@ -12,6 +12,7 @@ public final class Views {
     public static final String POSITION_DETAILS_VIEW_RESOURCE = "/com/invermo/application/gui/portfolio/views/details/position-details-view.fxml";
     public static final String TOAST_MESSAGE = "/com/invermo/application/gui/components/views/toast-message-view.fxml";
     public static final String STATISTICS_VIEW_RESOURCE = "/com/invermo/application/gui/statistics/view/statistics-view.fxml";
+    public static final String COMPOSITION_VIEW_RESOURCE = "/com/invermo/application/gui/composition/view/composition-view.fxml";
 
     private Views() {
     }
