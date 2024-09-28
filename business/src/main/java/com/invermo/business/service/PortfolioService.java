@@ -15,14 +15,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PortfolioService {
 
     private static final Logger logger = Logger.getLogger(PortfolioService.class.getName());
 
-    private final Map<String, BigDecimal> latestPrices = new HashMap<>();
+    private final Map<String, BigDecimal> latestPrices = new ConcurrentHashMap<>();
 
     private final AssetService assetsService;
     private final PositionService positionService;
@@ -35,12 +38,13 @@ public class PortfolioService {
     }
 
     public List<SinglePortfolioAsset> getPortfolioAssets(Long userId) {
-        initializeLatestPrices();
         final List<PositionWithAsset> positionWithAssets = positionService.getPositionsWithAssetsForUser(userId);
+        initializeLatestPrices(positionWithAssets);
         final List<SinglePortfolioAsset> singlePortfolioAssets = new ArrayList<>();
         final List<Transaction> transactions = transactionService.getAllTransactionsForPositions(positionWithAssets.stream().map(PositionWithAsset::getPositionId).toList());
         final Map<Long, List<Transaction>> transactionsForPosition = convertTransactionsToMap(transactions, positionWithAssets);
         BigDecimal portfolioAllValue = BigDecimal.ZERO;
+
         for (PositionWithAsset positionWithAsset : positionWithAssets) {
             final List<Transaction> transactionsPerAsset = transactionsForPosition.get(positionWithAsset.getPositionId());
             final BigDecimal numberOfAsset = NumberOfAssetCalculator.getNumberOfAsset(transactionsPerAsset);
@@ -100,18 +104,28 @@ public class PortfolioService {
     }
 
     private BigDecimal getValue(final PositionWithAsset positionWithAsset, final BigDecimal numberOfAsset) {
-        final BigDecimal latestPrice = getLatestPrice(positionWithAsset.getAssetSymbol());
+        final BigDecimal latestPrice = latestPrices.get(positionWithAsset.getAssetSymbol());
         final Currency assetCurrency = positionWithAsset.getCurrency();
         final BigDecimal latestCurrencyExchange = latestPrices.get(assetCurrency.name() + "/PLN");
         return PositionValueCalculator.getPositionValue(numberOfAsset, latestPrice, latestCurrencyExchange);
     }
 
-    private void initializeLatestPrices() {
-        final BigDecimal usdPln = getLatestPrice("USD/PLN");
-        final BigDecimal plnPLn = getLatestPrice("PLN/PLN");
-        final BigDecimal eurPln = getLatestPrice("EUR/PLN");
-        latestPrices.put("USD/PLN", usdPln);
-        latestPrices.put("PLN/PLN", plnPLn);
-        latestPrices.put("EUR/PLN", eurPln);
+    private void initializeLatestPrices(final List<PositionWithAsset> positionWithAssets) {
+        final Set<String> assetsSymbols = positionWithAssets.stream()
+                .map(PositionWithAsset::getAssetSymbol)
+                .collect(Collectors.toSet());
+        final Set<String> currenciesSymbols = Set.of("USD/PLN", "PLN/PLN", "EUR/PLN");
+
+        final List<CompletableFuture<Void>> futures = Stream.concat(assetsSymbols.stream(), currenciesSymbols.stream())
+                .map(symbol ->
+                        CompletableFuture
+                                .supplyAsync(() -> getLatestPrice(symbol))
+                                .thenAccept(price -> latestPrices.put(symbol, price))
+                )
+                .toList();
+
+        final CompletableFuture<Void> allOf = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+
+        allOf.join();
     }
 }
