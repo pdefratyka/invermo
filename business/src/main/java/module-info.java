@@ -11,6 +11,7 @@ module com.invermo.business {
     requires com.google.api.client.extensions.java6.auth;
     requires jdk.unsupported;
     requires jdk.httpserver;
+    requires org.apache.commons.lang3;
     exports com.invermo.business.facade;
     exports com.invermo.business.domain;
     exports com.invermo.business.enumeration;
