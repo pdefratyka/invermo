@@ -92,7 +92,6 @@ public class InvermoBarChart extends BarChart<String, Number> {
         try {
             value = Double.parseDouble(toFormat);
         } catch (NumberFormatException e) {
-            System.out.println("Invalid number format: " + toFormat);
             return "";
         }
 
@@ -118,7 +117,6 @@ public class InvermoBarChart extends BarChart<String, Number> {
         formattedValue += " PLN";
 
         // Print the formatted value
-        System.out.println(formattedValue);
         return formattedValue;
     }
 }

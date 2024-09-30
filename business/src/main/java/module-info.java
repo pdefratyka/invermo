@@ -9,6 +9,7 @@ module com.invermo.business {
     requires com.google.api.client.extensions.jetty.auth;
     requires com.google.api.client.auth;
     requires com.google.api.client.extensions.java6.auth;
+    requires org.slf4j;
     requires jdk.unsupported;
     requires jdk.httpserver;
     requires org.apache.commons.lang3;

@@ -3,6 +3,7 @@ module com.invermo {
     requires javafx.fxml;
     requires java.sql;
     requires lombok;
+    requires org.slf4j;
     requires com.invermo.business;
 
     opens com.invermo.application to javafx.fxml;

@@ -3,19 +3,17 @@ package com.invermo.persistence.repository.users;
 import com.invermo.persistence.entity.UserEntity;
 import com.invermo.persistence.repository.AbstractRepository;
 import com.invermo.persistence.tables.UsersTable;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
-import java.util.logging.Logger;
 
-
+@Slf4j
 public class UserRepository extends AbstractRepository {
 
-    private static final Logger logger = Logger.getLogger(UserRepository.class.getName());
-
     public Optional<UserEntity> findUserByLoginAndPassword(final String login, final String password) {
-        logger.info("Get user from database by login: " + login + " and password");
+        log.info("Get user from database by login: " + login + " and password");
         return getUserFromDB(login, password);
     }
 

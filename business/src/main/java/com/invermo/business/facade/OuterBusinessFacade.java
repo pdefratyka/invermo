@@ -39,7 +39,6 @@ public class OuterBusinessFacade {
     private final AssetPriceService assetPriceService;
 
     public Optional<User> login(final String login, final String password) {
-        System.out.println("test from business facade");
         return authenticationService.login(login, password);
     }
 

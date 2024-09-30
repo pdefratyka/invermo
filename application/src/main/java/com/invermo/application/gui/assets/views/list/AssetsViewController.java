@@ -49,7 +49,6 @@ public class AssetsViewController implements Initializable {
 
     public void searchAssets() {
         final String searchParam = searchField.getText();
-        System.out.println(searchParam);
         final List<Asset> assets = assetsService.getAssetsBySearchParam(searchParam);
         addAssetsToList(assets);
     }

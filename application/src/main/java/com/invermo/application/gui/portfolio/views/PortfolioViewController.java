@@ -183,7 +183,6 @@ public class PortfolioViewController implements Initializable {
     @FXML
     private void onPositionSelection() throws IOException {
         final SinglePortfolioAsset singlePortfolioAsset = assetsTable.getSelectionModel().getSelectedItem();
-        System.out.println(singlePortfolioAsset);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Views.POSITION_DETAILS_VIEW_RESOURCE));
         Parent root = loader.load();

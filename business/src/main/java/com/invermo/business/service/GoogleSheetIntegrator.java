@@ -13,6 +13,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.ValueRange;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,6 +24,7 @@ import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 public class GoogleSheetIntegrator {
     private static final String APPLICATION_NAME = "Google Sheets API Java Quickstart";
     private static final JsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
@@ -76,7 +78,7 @@ public class GoogleSheetIntegrator {
                 .execute();
         List<List<Object>> values = response.getValues();
         if (values == null || values.isEmpty()) {
-            System.out.println("No data found.");
+            log.warn("No data found.");
         } else {
             return values;
         }

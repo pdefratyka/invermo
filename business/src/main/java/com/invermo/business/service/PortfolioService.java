@@ -5,6 +5,7 @@ import com.invermo.business.domain.PositionWithAsset;
 import com.invermo.business.domain.SinglePortfolioAsset;
 import com.invermo.business.domain.Transaction;
 import com.invermo.business.enumeration.Currency;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -17,13 +18,11 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 public class PortfolioService {
-
-    private static final Logger logger = Logger.getLogger(PortfolioService.class.getName());
 
     private final Map<String, BigDecimal> latestPrices = new ConcurrentHashMap<>();
 
@@ -67,7 +66,7 @@ public class PortfolioService {
             portfolioAllValue = portfolioAllValue.add(value);
         }
         if (portfolioAllValue.intValue() == BigDecimal.ZERO.intValue()) {
-            logger.info("Portfolio all value equals zero");
+            log.info("Portfolio all value equals zero");
         } else {
             for (SinglePortfolioAsset singlePortfolioAsset : singlePortfolioAssets) {
                 singlePortfolioAsset.setPercentagePortfolioPart(singlePortfolioAsset.getValue().divide(portfolioAllValue, 6, RoundingMode.FLOOR)
@@ -98,7 +97,7 @@ public class PortfolioService {
                 .map(AssetPrice::getPrice)
                 .filter(Objects::nonNull)
                 .findFirst().orElseGet(() -> {
-                    logger.warning("Price not found for asset: " + symbol);
+                    log.warn("Price not found for asset: " + symbol);
                     return BigDecimal.ZERO;
                 });
     }

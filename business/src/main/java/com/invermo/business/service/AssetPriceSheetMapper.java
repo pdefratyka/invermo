@@ -3,6 +3,7 @@ package com.invermo.business.service;
 import com.invermo.business.domain.Asset;
 import com.invermo.business.domain.AssetPrice;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @AllArgsConstructor
+@Slf4j
 public class AssetPriceSheetMapper {
 
     public static List<AssetPrice> updateAssetPrices(final List<List<Object>> values, final List<Asset> assets) {
@@ -36,7 +38,7 @@ public class AssetPriceSheetMapper {
                                 .build();
                         assetsToUpdate.add(assetPrice);
                     } else {
-                        System.out.println("No asset found with symbol:" + assetSymbol);
+                        log.info("No asset found with symbol:" + assetSymbol);
                     }
                 }
             }

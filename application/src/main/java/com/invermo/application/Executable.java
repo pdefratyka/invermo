@@ -12,7 +12,6 @@ public class Executable {
 
     private static void initLogging() {
         try {
-            System.out.print("Hej");
             LogManager.getLogManager().readConfiguration(
                     Executable.class.getResourceAsStream("/logging.properties")
             );

@@ -14,11 +14,8 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class AssetRepository extends AbstractRepository {
-
-    private static final Logger logger = Logger.getLogger(AssetRepository.class.getName());
 
     public List<AssetEntity> findAllAssets() {
         final String query = prepareGetAssetsFromDbQuery();

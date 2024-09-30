@@ -2,6 +2,7 @@ package com.invermo.business.service;
 
 import com.invermo.business.domain.Asset;
 import com.invermo.business.domain.AssetPrice;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -10,12 +11,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class AssetPriceService {
-
-    private static final Logger logger = Logger.getLogger(AssetPriceService.class.getName());
 
     private final AssetService assetsService;
     private List<AssetPrice> latestAssetPrices;
@@ -52,7 +51,7 @@ public class AssetPriceService {
                     .filter(assetPrice -> assetPrice.getDateTime().isAfter(latestAssetPriceDate))
                     .toList());
         }
-        logger.info("Number of assets to update: " + assetsPricesToInsert.size());
+        log.info("Number of assets to update: " + assetsPricesToInsert.size());
         return assetsPricesToInsert;
     }
 
