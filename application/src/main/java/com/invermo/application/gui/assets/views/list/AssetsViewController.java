@@ -5,7 +5,9 @@ import com.invermo.application.gui.assets.components.SingleAssetComponent;
 import com.invermo.application.gui.assets.views.creation.CreateAssetViewController;
 import com.invermo.application.service.ServiceManager;
 import com.invermo.application.service.impl.AssetService;
+import com.invermo.application.service.impl.CategoryService;
 import com.invermo.business.domain.Asset;
+import com.invermo.business.domain.Category;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,10 +32,12 @@ public class AssetsViewController implements Initializable {
     private TextField searchField;
 
     private AssetService assetsService;
+    private CategoryService categoryService;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         assetsService = ServiceManager.getAssetsService();
+        categoryService = ServiceManager.getCategoryService();
         refreshAssetsList();
     }
 
@@ -56,17 +60,34 @@ public class AssetsViewController implements Initializable {
     public void onAddAssetAction() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(Views.CRATE_ASSET_VIEW_RESOURCE));
         Parent root = loader.load();
-        Scene scene = new Scene(root, 640, 400);
+        Scene scene = new Scene(root, 640, 700);
         Stage stage = new Stage();
         stage.setTitle("Asset Creation");
         stage.setScene(scene);
         CreateAssetViewController createAssetViewController = loader.getController();
         createAssetViewController.setAssetsViewController(this);
+        createAssetViewController.initializeMainCategories();
         Stage primaryStage = (Stage) assetsList.getScene().getWindow();
         stage.initOwner(primaryStage);
         stage.setResizable(false);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.show();
+    }
+
+    public List<Category> getAllMainCategories() {
+        return categoryService.getAllMainCategories();
+    }
+
+    public List<Category> getChildCategoriesByParentId(long parentId) {
+        return categoryService.getChildCategoriesByParentId(parentId);
+    }
+
+    public List<Category> getCategoriesByAssetId(long assetId) {
+        return categoryService.getCategoriesByAssetId(assetId);
+    }
+
+    public void saveAssetCategory(long assetId, long categoryId) {
+        categoryService.saveAssetCategory(assetId, categoryId);
     }
 
     private void addAssetsToList(final List<Asset> assets) {

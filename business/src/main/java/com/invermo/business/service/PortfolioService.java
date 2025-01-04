@@ -54,6 +54,7 @@ public class PortfolioService {
             final SinglePortfolioAsset portfolioAsset = SinglePortfolioAsset.builder()
                     .name(positionWithAsset.getAssetName())
                     .assetType(positionWithAsset.getAssetType().getName())
+                    .assetId(positionWithAsset.getAssetId())
                     .positionType(positionWithAsset.getPositionType().name())
                     .positionId(positionWithAsset.getPositionId())
                     .number(numberOfAsset)

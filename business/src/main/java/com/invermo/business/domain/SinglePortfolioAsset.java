@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 public class SinglePortfolioAsset {
     private String name;
     private String assetType;
+    private Long assetId;
     private String positionType;
     private Long positionId;
     private BigDecimal number;

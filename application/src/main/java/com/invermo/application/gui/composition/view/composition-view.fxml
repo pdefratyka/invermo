@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.invermo.application.gui.composition.view.CompositionViewController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="744.0" prefWidth="1238.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.invermo.application.gui.composition.view.CompositionViewController">
+    <children>
+        <PieChart fx:id="countryChart" layoutX="103.0" layoutY="77.0" prefHeight="355.0" prefWidth="512.0"
+                  title="Country"/>
+        <PieChart fx:id="continentChart" layoutX="655.0" layoutY="77.0" prefHeight="355.0" prefWidth="512.0"
+                  title="Continent"/>
+    </children>
 </AnchorPane>

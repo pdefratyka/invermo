@@ -1,11 +1,13 @@
 package com.invermo.application.service;
 
 import com.invermo.application.facade.InnerApplicationFacade;
+import com.invermo.application.gui.composition.service.CompositionService;
 import com.invermo.application.gui.portfolio.service.PositionDetailsService;
 import com.invermo.application.gui.statistics.service.StatisticsService;
 import com.invermo.application.service.impl.AssetPriceService;
 import com.invermo.application.service.impl.AssetService;
 import com.invermo.application.service.impl.AuthenticationService;
+import com.invermo.application.service.impl.CategoryService;
 import com.invermo.application.service.impl.PortfolioService;
 import com.invermo.application.service.impl.PositionService;
 import com.invermo.application.service.impl.TransactionService;
@@ -25,6 +27,8 @@ public class ServiceManager {
     private static AssetPriceService assetPriceService;
     private static PositionDetailsService positionDetailsService;
     private static StatisticsService statisticsService;
+    private static CategoryService categoryService;
+    private static CompositionService compositionService;
 
     public static AuthenticationService getAuthenticationService() {
         if (authenticationService == null) {
@@ -87,5 +91,19 @@ public class ServiceManager {
             statisticsService = new StatisticsService(getInnerApplicationFacade());
         }
         return statisticsService;
+    }
+
+    public static CategoryService getCategoryService() {
+        if (categoryService == null) {
+            categoryService = new CategoryService(getInnerApplicationFacade());
+        }
+        return categoryService;
+    }
+
+    public static CompositionService getCompositionService() {
+        if (compositionService == null) {
+            compositionService = new CompositionService(getInnerApplicationFacade());
+        }
+        return compositionService;
     }
 }

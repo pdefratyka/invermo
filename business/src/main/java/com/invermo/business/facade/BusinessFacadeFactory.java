@@ -12,6 +12,8 @@ public class BusinessFacadeFactory {
                 ServiceManager.getTransactionDetailsCalculator(),
                 ServiceManager.getPositionGainService(),
                 ServiceManager.getPortfolioService(),
-                ServiceManager.getAssetPriceService());
+                ServiceManager.getAssetPriceService(),
+                ServiceManager.getCategoryService(),
+                ServiceManager.getCompositionService());
     }
 }

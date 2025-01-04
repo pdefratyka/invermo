@@ -2,11 +2,14 @@ package com.invermo.persistence.facade;
 
 import com.invermo.persistence.entity.AssetEntity;
 import com.invermo.persistence.entity.AssetPriceEntity;
+import com.invermo.persistence.entity.CategoryAssetEntity;
+import com.invermo.persistence.entity.CategoryEntity;
 import com.invermo.persistence.entity.PositionEntity;
 import com.invermo.persistence.entity.PositionWithAssetEntity;
 import com.invermo.persistence.entity.TransactionEntity;
 import com.invermo.persistence.entity.UserEntity;
 import com.invermo.persistence.repository.assets.AssetRepository;
+import com.invermo.persistence.repository.category.CategoryRepository;
 import com.invermo.persistence.repository.positions.PositionRepository;
 import com.invermo.persistence.repository.transactions.TransactionRepository;
 import com.invermo.persistence.repository.users.UserRepository;
@@ -23,12 +26,14 @@ public class OuterPersistenceFacade {
     private final AssetRepository assetRepository;
     private final PositionRepository positionRepository;
     private final TransactionRepository transactionRepository;
+    private final CategoryRepository categoryRepository;
 
     private OuterPersistenceFacade() {
         userRepository = new UserRepository();
         assetRepository = new AssetRepository();
         positionRepository = new PositionRepository();
         transactionRepository = new TransactionRepository();
+        categoryRepository = new CategoryRepository();
     }
 
     public Optional<UserEntity> findUserByLoginAndPassword(final String login, final String password) {
@@ -89,6 +94,22 @@ public class OuterPersistenceFacade {
 
     public List<TransactionEntity> getAllTransactionsForPositions(List<Long> positionsIds) {
         return transactionRepository.getAllTransactionsForPositions(positionsIds);
+    }
+
+    public List<CategoryEntity> getAllMainCategories() {
+        return categoryRepository.findAllMainCategories();
+    }
+
+    public List<CategoryEntity> getChildCategoriesByParentId(long parentId) {
+        return categoryRepository.findChildCategoriesByParentId(parentId);
+    }
+
+    public List<CategoryEntity> getCategoriesByAssetId(long assetId) {
+        return categoryRepository.findCategoriesByAssetId(assetId);
+    }
+
+    public void saveAssetCategory(long assetId, long categoryId) {
+        categoryRepository.saveCategory(assetId, categoryId);
     }
 
     public static OuterPersistenceFacade getInstance() {

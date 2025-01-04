@@ -143,14 +143,14 @@ public class SingleAssetComponent extends Pane {
         final FXMLLoader loader = new FXMLLoader(getClass().getResource(Views.CRATE_ASSET_VIEW_RESOURCE));
         final Parent root = loadResource(loader);
 
-        Scene scene = new Scene(root, 640, 400);
+        Scene scene = new Scene(root, 640, 700);
         Stage stage = new Stage();
         stage.setTitle("Asset Creation");
         stage.setScene(scene);
 
         CreateAssetViewController controller = loader.getController();
-        controller.setAsset(asset, isEditable);
         controller.setAssetsViewController(parentController);
+        controller.setAsset(asset, isEditable);
 
         Stage primaryStage = (Stage) parentComponent.getScene().getWindow();
         stage.initOwner(primaryStage);

@@ -41,6 +41,9 @@ public final class PositionMapper {
     }
 
     public static PositionWithAsset mapPositionWithAssetEntityToPositionWithAsset(final PositionWithAssetEntity positionWithAssetEntity) {
+        if (positionWithAssetEntity == null) {
+            return null;
+        }
         return PositionWithAsset.builder()
                 .positionId(positionWithAssetEntity.getPositionId())
                 .assetId(positionWithAssetEntity.getAssetId())
