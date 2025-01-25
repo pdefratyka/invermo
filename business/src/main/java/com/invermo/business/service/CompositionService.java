@@ -2,11 +2,13 @@ package com.invermo.business.service;
 
 import com.invermo.business.domain.Category;
 import com.invermo.business.domain.SinglePortfolioAsset;
+import com.invermo.business.enumeration.AssetType;
 import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -23,7 +25,9 @@ public class CompositionService {
                 .name("Other")
                 .build();
         categories.put(otherCategory, BigDecimal.ZERO);
-        final List<SinglePortfolioAsset> portfolioAssets = portfolioService.getPortfolioAssets(userId);
+        final List<SinglePortfolioAsset> portfolioAssets = portfolioService.getPortfolioAssets(userId).stream()
+                .filter(positionWithAsset -> !Set.of(AssetType.CURRENCY, AssetType.CRYPTOCURRENCY).contains(AssetType.fromName(positionWithAsset.getAssetType())))
+                .toList();
         for (SinglePortfolioAsset asset : portfolioAssets) {
             categoryService.getCategoriesByAssetId(asset.getAssetId())
                     .stream()

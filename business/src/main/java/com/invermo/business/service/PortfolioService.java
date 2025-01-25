@@ -114,7 +114,7 @@ public class PortfolioService {
         final Set<String> assetsSymbols = positionWithAssets.stream()
                 .map(PositionWithAsset::getAssetSymbol)
                 .collect(Collectors.toSet());
-        final Set<String> currenciesSymbols = Set.of("USD/PLN", "PLN/PLN", "EUR/PLN");
+        final Set<String> currenciesSymbols = Set.of("USD/PLN", "PLN/PLN", "EUR/PLN", "GBP/PLN");
 
         final List<CompletableFuture<Void>> futures = Stream.concat(assetsSymbols.stream(), currenciesSymbols.stream())
                 .map(symbol ->
